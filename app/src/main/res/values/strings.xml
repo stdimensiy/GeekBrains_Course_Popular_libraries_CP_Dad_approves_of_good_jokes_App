@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Dad Approves</string>
+    <string name="tv_category_name_anecdotes">Aнекдоты</string>
+    <string name="tv_category_name_stories">Рассказы</string>
+    <string name="tv_category_name_poems">Стишки</string>
+    <string name="tv_category_name_aphorisms">Афоризмы</string>
+    <string name="tv_category_name_dad_lock">Папин одобрятель</string>
+    <string name="tv_category_base_info_anecdotes">Папа одобрил 100 новых анекдотов</string>
+    <string name="tv_category_base_info_stories">Папа одобрил 100 новых рассказов</string>
+    <string name="tv_category_base_info_poems">Папа одобрил 100 новых стишков</string>
+    <string name="tv_category_base_info_aphorisms">Папа одобрил 100 новых афоризмов</string>
+    <string name="tv_category_base_info_dad_lock">Ты сюда не ходи… туда ходи!</string>
+    <string name="dad_lock_fragment_text_plug">Для включения режима модерации контента введите ппароль!</string>
+    <string name="content_text_plug">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="btn_back_label"><![CDATA[<< назад]]></string>
+    <string name="btn_forward_label"><![CDATA[вперед >>]]></string>
 </resources>

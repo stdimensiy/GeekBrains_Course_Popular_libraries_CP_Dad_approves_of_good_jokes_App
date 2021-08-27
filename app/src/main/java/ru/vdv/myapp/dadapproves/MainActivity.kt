@@ -8,11 +8,11 @@ import moxy.ktx.moxyPresenter
 import ru.vdv.myapp.dadapproves.databinding.ActivityMainBinding
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
 import ru.vdv.myapp.mygitapiapp.AndroidScreens
-import ru.vdv.myapp.mygitapiapp.MainPresenter
+import ru.vdv.myapp.mygitapiapp.MainActivityPresenter
 
 class MainActivity : MvpAppCompatActivity(), MvpView {
     val navigator = AppNavigator(this, R.id.container)
-    private val presenter by moxyPresenter { MainPresenter(App.instance.router, AndroidScreens()) }
+    private val presenter by moxyPresenter { MainActivityPresenter(App.instance.router, AndroidScreens()) }
     private var vb: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

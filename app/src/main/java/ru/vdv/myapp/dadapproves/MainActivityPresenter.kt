@@ -5,7 +5,7 @@ import moxy.MvpPresenter
 import moxy.MvpView
 import ru.vdv.myapp.dadapproves.presentation.interfaces.IScreens
 
-class MainPresenter(val router: Router, val screens: IScreens) : MvpPresenter<MvpView>() {
+class MainActivityPresenter(val router: Router, val screens: IScreens) : MvpPresenter<MvpView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
