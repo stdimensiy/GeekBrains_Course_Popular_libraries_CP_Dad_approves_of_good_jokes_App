@@ -34,7 +34,10 @@ class DadsOfficeFragment : MvpAppCompatFragment(), MainView, BackButtonListener 
         }.root
 
     override fun init() {
-        //TODO("Not yet implemented")
+        vb?.cvCategoryJokes?.setOnClickListener { presenter.goToContentView(1) }
+        vb?.cvStories?.setOnClickListener { presenter.goToContentView(2) }
+        vb?.cvPoems?.setOnClickListener { presenter.goToContentView(3) }
+        vb?.cvAfor?.setOnClickListener { presenter.goToContentView(4) }
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()

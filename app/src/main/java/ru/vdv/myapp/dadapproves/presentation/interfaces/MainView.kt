@@ -14,5 +14,4 @@ interface MainView : MvpView {
      * Первичная инициализация представления
      */
     fun init()
-
 }

@@ -9,13 +9,12 @@ import ru.vdv.myapp.dadapproves.App
 import ru.vdv.myapp.dadapproves.databinding.FragmentContentViewBinding
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
 import ru.vdv.myapp.dadapproves.presentation.interfaces.MainView
-import ru.vdv.myapp.dadapproves.presentation.main.MainPresenter
 import ru.vdv.myapp.mygitapiapp.myschedulers.MySchedulersFactory
 
 class ContentViewFragment : MvpAppCompatFragment(), MainView, BackButtonListener {
     private var vb: FragmentContentViewBinding? = null
-    private val presenter: MainPresenter by moxyPresenter {
-        MainPresenter(
+    private val presenter: ContentViewPresenter by moxyPresenter {
+        ContentViewPresenter(
             MySchedulersFactory.create(),
             App.instance.router
         )
@@ -35,7 +34,8 @@ class ContentViewFragment : MvpAppCompatFragment(), MainView, BackButtonListener
         }.root
 
     override fun init() {
-        //TODO("Not yet implemented")
+        vb?.btnBack?.setOnClickListener { presenter.btnBackPressed() }
+        vb?.btnNext?.setOnClickListener { presenter.btnNextPressed() }
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()
