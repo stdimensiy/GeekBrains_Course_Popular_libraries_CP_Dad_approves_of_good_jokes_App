@@ -1,12 +1,11 @@
 package ru.vdv.myapp.dadapproves.presentation.interfaces
 
-import moxy.viewstate.strategy.AddToEndSingleStrategy
-import moxy.viewstate.strategy.StateStrategyType
+import moxy.viewstate.strategy.alias.SingleState
 
 /**
  * Интерфейс экрана аутентификации пользователя (родителя) *
  */
-@StateStrategyType(AddToEndSingleStrategy::class)
+@SingleState()
 interface AuthView : MainView {
 
     /**

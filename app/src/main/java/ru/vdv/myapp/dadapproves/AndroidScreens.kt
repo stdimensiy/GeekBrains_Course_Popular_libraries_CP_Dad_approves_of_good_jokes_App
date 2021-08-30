@@ -37,6 +37,6 @@ class AndroidScreens : IScreens {
      *Объявление экрана просмотра контента
      *@return возвращает экран просмотра контента (немного разный в зависимости от режима(Screen)
      */
-    override fun contentView(modeView: Int, category: Int): Screen =
-        FragmentScreen { ContentViewFragment.newInstance() }
+    override fun contentView(moderationMode: Boolean, category: Int): Screen =
+        FragmentScreen { ContentViewFragment.newInstance(moderationMode, category) }
 }

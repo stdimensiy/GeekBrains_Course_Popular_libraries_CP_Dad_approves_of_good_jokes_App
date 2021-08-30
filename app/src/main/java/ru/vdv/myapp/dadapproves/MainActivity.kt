@@ -12,7 +12,12 @@ import ru.vdv.myapp.mygitapiapp.MainActivityPresenter
 
 class MainActivity : MvpAppCompatActivity(), MvpView {
     val navigator = AppNavigator(this, R.id.container)
-    private val presenter by moxyPresenter { MainActivityPresenter(App.instance.router, AndroidScreens()) }
+    private val presenter by moxyPresenter {
+        MainActivityPresenter(
+            App.instance.router,
+            AndroidScreens()
+        )
+    }
     private var vb: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -38,7 +38,7 @@ class MainFragment : MvpAppCompatFragment(), MainView, BackButtonListener {
         vb?.cvStories?.setOnClickListener { presenter.goToContentView(2) }
         vb?.cvPoems?.setOnClickListener { presenter.goToContentView(3) }
         vb?.cvAfor?.setOnClickListener { presenter.goToContentView(4) }
-        vb?.cvDadLock?.setOnClickListener { presenter.goToDadLock()  }
+        vb?.cvDadLock?.setOnClickListener { presenter.goToDadLock() }
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()

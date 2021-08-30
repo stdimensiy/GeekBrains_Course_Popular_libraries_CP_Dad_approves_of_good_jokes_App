@@ -26,5 +26,5 @@ interface IScreens {
     /**
      * Экран просмотра контента
      */
-    fun contentView(modeView: Int, category: Int): Screen
+    fun contentView(moderationMode: Boolean, category: Int): Screen
 }

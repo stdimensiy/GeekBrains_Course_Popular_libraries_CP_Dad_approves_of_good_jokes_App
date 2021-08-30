@@ -12,10 +12,9 @@ import ru.vdv.myapp.dadapproves.App
 import ru.vdv.myapp.dadapproves.databinding.FragmentDadLockBinding
 import ru.vdv.myapp.dadapproves.presentation.interfaces.AuthView
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
-import ru.vdv.myapp.dadapproves.presentation.interfaces.MainView
 import ru.vdv.myapp.mygitapiapp.myschedulers.MySchedulersFactory
 
-class DadLockFragment : MvpAppCompatFragment(), MainView, AuthView, BackButtonListener {
+class DadLockFragment : MvpAppCompatFragment(), AuthView, BackButtonListener {
     private var vb: FragmentDadLockBinding? = null
     private val presenter: DadLockPresenter by moxyPresenter {
         DadLockPresenter(
@@ -52,7 +51,7 @@ class DadLockFragment : MvpAppCompatFragment(), MainView, AuthView, BackButtonLi
 
     override fun backPressed(): Boolean = presenter.backPressed()
 
-    override fun showErrorMessage(){
+    override fun showErrorMessage() {
         vb?.tvErrorMessage?.visibility = View.VISIBLE
 
     }

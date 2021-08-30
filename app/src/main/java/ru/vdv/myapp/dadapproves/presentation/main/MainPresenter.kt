@@ -24,7 +24,7 @@ class MainPresenter(
     }
 
     fun goToContentView(i: Int) {
-        router.navigateTo(AndroidScreens().contentView(1,i))
+        router.navigateTo(AndroidScreens().contentView(false, i))
     }
 
     fun backPressed(): Boolean {

@@ -5,7 +5,6 @@ import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.AuthView
-import ru.vdv.myapp.dadapproves.presentation.interfaces.MainView
 import ru.vdv.myapp.mygitapiapp.AndroidScreens
 
 class DadLockPresenter(
@@ -26,17 +25,16 @@ class DadLockPresenter(
 
     fun checkUser(s: String) {
         Log.d("Моя проверка", "Передан параметр $s")
-        if (checkUserPassword(s)){
+        if (checkUserPassword(s)) {
             viewState.hideErrorMessage()
             router.navigateTo(AndroidScreens().dadsOffice())
-        }
-        else {
+        } else {
             viewState.showErrorMessage()
             viewState.clearPasswordView()
         }
     }
 
-    private fun checkUserPassword(password: String) : Boolean{
+    private fun checkUserPassword(password: String): Boolean {
         if (password == "123") return true // на данном этапе так для тестирования
         return false
     }

@@ -17,7 +17,7 @@ class DadsOfficePresenter(
     }
 
     fun goToContentView(i: Int) {
-        router.navigateTo(AndroidScreens().contentView(2,i))
+        router.navigateTo(AndroidScreens().contentView(true, i))
     }
 
     fun backPressed(): Boolean {
