@@ -15,4 +15,8 @@
     <string name="btn_back_label"><![CDATA[<< назад]]></string>
     <string name="btn_forward_label"><![CDATA[вперед >>]]></string>
     <string name="dad_lock_fragment_error_message_text_plug">Ошибка! Введен неверный пароль!</string>
+    <string name="stat_title_status_content_label">Состояние:</string>
+    <string name="not_verified_status_content">Не проверен</string>
+    <string name="verified_status_content">Проверено / одобрено</string>
+    <string name="verified_forbidden_status_content">Проверено / запрещено!</string>
 </resources>
