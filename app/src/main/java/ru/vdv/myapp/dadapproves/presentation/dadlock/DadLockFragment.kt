@@ -10,9 +10,9 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.vdv.myapp.dadapproves.App
 import ru.vdv.myapp.dadapproves.databinding.FragmentDadLockBinding
+import ru.vdv.myapp.dadapproves.myschedulers.MySchedulersFactory
 import ru.vdv.myapp.dadapproves.presentation.interfaces.AuthView
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
-import ru.vdv.myapp.mygitapiapp.myschedulers.MySchedulersFactory
 
 class DadLockFragment : MvpAppCompatFragment(), AuthView, BackButtonListener {
     private var vb: FragmentDadLockBinding? = null

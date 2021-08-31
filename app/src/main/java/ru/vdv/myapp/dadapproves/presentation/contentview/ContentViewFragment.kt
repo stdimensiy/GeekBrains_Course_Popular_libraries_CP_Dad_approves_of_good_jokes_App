@@ -6,18 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.os.bundleOf
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.vdv.myapp.dadapproves.App
 import ru.vdv.myapp.dadapproves.databinding.FragmentContentViewBinding
+import ru.vdv.myapp.dadapproves.myschedulers.MySchedulersFactory
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
 import ru.vdv.myapp.dadapproves.presentation.interfaces.ContentView
-import ru.vdv.myapp.mygitapiapp.myschedulers.MySchedulersFactory
 
-class ContentViewFragment(modeView: Boolean, category: Int) : MvpAppCompatFragment(), ContentView,
+class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     BackButtonListener {
     private var vb: FragmentContentViewBinding? = null
     private val presenter: ContentViewPresenter by moxyPresenter {
+        Log.d("Моя проверка", "получен параметры = " + arguments.toString())
         ContentViewPresenter(
             modeView,
             category,
@@ -26,9 +28,21 @@ class ContentViewFragment(modeView: Boolean, category: Int) : MvpAppCompatFragme
         )
     }
 
+    private val modeView: Boolean? by lazy {
+        arguments?.getBoolean(DAD_MODE, false)
+    }
+
+    private val category: Int? by lazy {
+        arguments?.getInt(ID_CATEGORY, 1)
+    }
+
     companion object {
+        private const val DAD_MODE = "DAD_MODE"
+        private const val ID_CATEGORY = "ID_CATEGORY"
         fun newInstance(moderationMode: Boolean, category: Int) =
-            ContentViewFragment(moderationMode, category)
+            ContentViewFragment().apply {
+                arguments = bundleOf(DAD_MODE to moderationMode, ID_CATEGORY to category)
+            }
     }
 
     override fun onCreateView(

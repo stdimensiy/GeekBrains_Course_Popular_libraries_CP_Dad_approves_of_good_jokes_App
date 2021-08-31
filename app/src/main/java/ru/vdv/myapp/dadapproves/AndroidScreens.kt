@@ -1,4 +1,4 @@
-package ru.vdv.myapp.mygitapiapp
+package ru.vdv.myapp.dadapproves
 
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen

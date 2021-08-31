@@ -7,8 +7,8 @@ import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.ContentView
 
 class ContentViewPresenter(
-    private var moderationMode: Boolean = false,
-    private val category: Int,
+    private var moderationMode: Boolean? = false,
+    private val category: Int? = 1,
     private val schedulers: IMySchedulers,
     private val router: Router
 ) : MvpPresenter<ContentView>() {
@@ -20,10 +20,12 @@ class ContentViewPresenter(
         viewState.clearStatus()
         viewState.setTag("Пиривет!")
         Log.d("Моя проверка", "передан режим $moderationMode")
-        if (moderationMode) {
-            Log.d("Моя проверка", "Пытаюсь организовать админский режим")
-            viewState.moderatorModeInit()
-            viewState.showModeratorBtnGroup()
+        moderationMode?.let {
+            if (it) {
+                Log.d("Моя проверка", "Пытаюсь организовать админский режим")
+                viewState.moderatorModeInit()
+                viewState.showModeratorBtnGroup()
+            }
         }
     }
 

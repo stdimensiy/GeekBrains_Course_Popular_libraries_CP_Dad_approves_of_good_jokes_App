@@ -3,9 +3,9 @@ package ru.vdv.myapp.dadapproves.presentation.dadlock
 import android.util.Log
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
+import ru.vdv.myapp.dadapproves.AndroidScreens
 import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.AuthView
-import ru.vdv.myapp.mygitapiapp.AndroidScreens
 
 class DadLockPresenter(
     private val schedulers: IMySchedulers,

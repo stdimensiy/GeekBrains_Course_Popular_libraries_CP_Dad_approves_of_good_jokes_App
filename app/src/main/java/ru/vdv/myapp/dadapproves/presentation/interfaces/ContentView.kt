@@ -1,11 +1,12 @@
 package ru.vdv.myapp.dadapproves.presentation.interfaces
 
-import moxy.viewstate.strategy.alias.SingleState
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
 /**
  * Интерфейс экрана отображения и модерирования контента
  */
-@SingleState
+@StateStrategyType(AddToEndSingleStrategy::class)
 interface ContentView : MainView {
 
     fun showProgressBar()

@@ -1,13 +1,12 @@
-package ru.vdv.myapp.mygitapiapp.myschedulers
+package ru.vdv.myapp.dadapproves.myschedulers
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
-import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 
 /**
  * Метод реализации планировщиков
- * в данном классе чуть больше методов чем требуется для выполнения конкретного ДЗ
+ * в данном классе чуть больше методов чем требуется для выполнения конкретного курсового проекта
  * дополнительные методы внедрены для самоподготовки и тренировки.
  * описание методов и конкретных планировщиков приведены в интерфейсе
  */

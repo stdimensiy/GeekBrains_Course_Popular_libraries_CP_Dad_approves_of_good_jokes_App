@@ -1,6 +1,4 @@
-package ru.vdv.myapp.mygitapiapp.myschedulers
-
-import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
+package ru.vdv.myapp.dadapproves.myschedulers
 
 object MySchedulersFactory {
     fun create(): IMySchedulers = MySchedulers()

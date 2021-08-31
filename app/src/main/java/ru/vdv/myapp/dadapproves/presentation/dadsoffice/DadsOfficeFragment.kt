@@ -7,9 +7,9 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.vdv.myapp.dadapproves.App
 import ru.vdv.myapp.dadapproves.databinding.FragmentDadsOfficeBinding
+import ru.vdv.myapp.dadapproves.myschedulers.MySchedulersFactory
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
 import ru.vdv.myapp.dadapproves.presentation.interfaces.MainView
-import ru.vdv.myapp.mygitapiapp.myschedulers.MySchedulersFactory
 
 class DadsOfficeFragment : MvpAppCompatFragment(), MainView, BackButtonListener {
     private var vb: FragmentDadsOfficeBinding? = null

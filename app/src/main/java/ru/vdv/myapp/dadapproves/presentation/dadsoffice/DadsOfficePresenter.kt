@@ -2,9 +2,9 @@ package ru.vdv.myapp.dadapproves.presentation.dadsoffice
 
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
+import ru.vdv.myapp.dadapproves.AndroidScreens
 import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.MainView
-import ru.vdv.myapp.mygitapiapp.AndroidScreens
 
 class DadsOfficePresenter(
     private val schedulers: IMySchedulers,
