@@ -10,12 +10,12 @@ import moxy.viewstate.strategy.StateStrategyType
 interface AuthView : MainView {
 
     /**
-     * Отображение сообщения об ошибке (штатного фикстироанного)
+     * Отображение сообщения об ошибке (штатного фиксироанного)
      */
     fun showErrorMessage()
 
     /**
-     * Сокрытие сообщения об ошибке (штатного фикстироанного)
+     * Сокрытие сообщения об ошибке (штатного фиксироанного)
      */
     fun hideErrorMessage()
 

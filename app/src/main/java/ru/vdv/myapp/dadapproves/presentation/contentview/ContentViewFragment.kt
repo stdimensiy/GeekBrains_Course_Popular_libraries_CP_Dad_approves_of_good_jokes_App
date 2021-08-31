@@ -1,7 +1,6 @@
 package ru.vdv.myapp.dadapproves.presentation.contentview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     BackButtonListener {
     private var vb: FragmentContentViewBinding? = null
     private val presenter: ContentViewPresenter by moxyPresenter {
-        Log.d("Моя проверка", "получен параметры = " + arguments.toString())
         ContentViewPresenter(
             modeView,
             category,
@@ -68,8 +66,6 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
         vb?.etTag?.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
-                    Log.d("Моя проверка", "Сработал мето сохранения метатега контента")
-                    //попытка авторизации пользователя
                     presenter.saveTag(vb?.etTag?.editableText.toString())
                 }
             }

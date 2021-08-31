@@ -5,6 +5,9 @@ import moxy.viewstate.strategy.StateStrategyType
 
 /**
  * Интерфейс экрана отображения и модерирования контента
+ * разметка экрана как и сам фрагмент единый как для режима просмотра
+ * так и для режима модерации в зависимости от выбранного режима просто
+ * скрываются ненужные и отображаются нужные виджеты
  */
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface ContentView : MainView {

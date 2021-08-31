@@ -1,7 +1,6 @@
 package ru.vdv.myapp.dadapproves.presentation.dadlock
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,8 +39,6 @@ class DadLockFragment : MvpAppCompatFragment(), AuthView, BackButtonListener {
         vb?.etNumberPassword?.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
-                    Log.d("Моя проверка", "Сработал нужный мне метод")
-                    //попытка авторизации пользователя
                     presenter.checkUser(vb?.etNumberPassword?.editableText.toString())
                 }
             }

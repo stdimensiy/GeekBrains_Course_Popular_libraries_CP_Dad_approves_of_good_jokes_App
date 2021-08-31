@@ -1,6 +1,5 @@
 package ru.vdv.myapp.dadapproves.presentation.dadlock
 
-import android.util.Log
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 import ru.vdv.myapp.dadapproves.AndroidScreens
@@ -24,7 +23,6 @@ class DadLockPresenter(
     }
 
     fun checkUser(s: String) {
-        Log.d("Моя проверка", "Передан параметр $s")
         if (checkUserPassword(s)) {
             viewState.hideErrorMessage()
             router.navigateTo(AndroidScreens().dadsOffice())

@@ -1,6 +1,5 @@
 package ru.vdv.myapp.dadapproves.presentation.contentview
 
-import android.util.Log
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
@@ -19,10 +18,8 @@ class ContentViewPresenter(
         viewState.hideModeratorBtnGroup()
         viewState.clearStatus()
         viewState.setTag("Пиривет!")
-        Log.d("Моя проверка", "передан режим $moderationMode")
         moderationMode?.let {
             if (it) {
-                Log.d("Моя проверка", "Пытаюсь организовать админский режим")
                 viewState.moderatorModeInit()
                 viewState.showModeratorBtnGroup()
             }
@@ -35,22 +32,17 @@ class ContentViewPresenter(
     }
 
     fun btnBackPressed() {
-        Log.d("Моя проверка", "Нажата кнопка управления контентом НАЗАД")
     }
 
     fun btnNextPressed() {
-        Log.d("Моя проверка", "Нажата кнопка управления контентом ВПЕРЕД")
     }
 
     fun btnApprovePressed() {
-        Log.d("Моя проверка", "Нажата кнопка одобрения контента")
     }
 
     fun btnForbidPressed() {
-        Log.d("Моя проверка", "Нажата кнопка запрета контента")
     }
 
     fun saveTag(s: String) {
-        Log.d("Моя проверка", "Попытка сохранить изменения в теге контента")
     }
 }
