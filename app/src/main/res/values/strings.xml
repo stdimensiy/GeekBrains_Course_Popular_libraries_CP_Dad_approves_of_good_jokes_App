@@ -20,4 +20,6 @@
     <string name="verified_status_content">Проверено / одобрено</string>
     <string name="verified_forbidden_status_content">Проверено / запрещено!</string>
     <string name="stat_title_teg_content_label">Ключевые слова или заголовок:</string>
+    <string name="btn_forbid_title">Запретить</string>
+    <string name="btn_approve_title">Одобрить</string>
 </resources>

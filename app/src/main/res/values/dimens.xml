@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_margin_top">8dp</dimen>
+    <dimen name="main_margin_bottom">8dp</dimen>
+    <dimen name="mcv_portrait_height">100dp</dimen>
+    <dimen name="mcv_margin">4dp</dimen>
+    <dimen name="mcv_elevation">2dp</dimen>
+    <dimen name="mcv_padding">4dp</dimen>
+    <dimen name="mcv_cardCornerRadius">8dp</dimen>
+    <dimen name="iv_portrait_item_label_width">100dp</dimen>
+    <dimen name="iv_item_label_margin">4dp</dimen>
+    <dimen name="tv_item_category_name_textSize">34sp</dimen>
+    <dimen name="mcv_land_height">72dp</dimen>
+    <dimen name="tv_item_adminMode_name_textSize">24sp</dimen>
+    <dimen name="standard_btn_margin">8dp</dimen>
+    <dimen name="standard_btn_padding">8dp</dimen>
+    <dimen name="standard_message_text_size">20sp</dimen>
+    <dimen name="btn_standard_width">150dp</dimen>
+</resources>

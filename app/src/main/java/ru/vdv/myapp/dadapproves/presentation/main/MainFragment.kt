@@ -34,10 +34,10 @@ class MainFragment : MvpAppCompatFragment(), MainView, BackButtonListener {
         }.root
 
     override fun init() {
-        vb?.cvCategoryJokes?.setOnClickListener { presenter.goToContentView(1) }
+        vb?.cvCategoryAnecdotes?.setOnClickListener { presenter.goToContentView(1) }
         vb?.cvStories?.setOnClickListener { presenter.goToContentView(2) }
         vb?.cvPoems?.setOnClickListener { presenter.goToContentView(3) }
-        vb?.cvAfor?.setOnClickListener { presenter.goToContentView(4) }
+        vb?.cvAphorisms?.setOnClickListener { presenter.goToContentView(4) }
         vb?.cvDadLock?.setOnClickListener { presenter.goToDadLock() }
     }
 
