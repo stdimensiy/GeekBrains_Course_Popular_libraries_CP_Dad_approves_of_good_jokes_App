@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/main_margin_top"
     android:layout_marginStart="@dimen/main_margin_top"
+    android:layout_marginTop="@dimen/main_margin_top"
     android:layout_marginEnd="@dimen/main_margin_top"
     android:layout_marginBottom="@dimen/main_margin_bottom"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/btn_standard_width"
         android:layout_height="wrap_content"
-        android:padding="@dimen/standard_btn_padding"
         android:text="@string/btn_back_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_content" />
@@ -34,9 +33,8 @@
 
     <Button
         android:id="@+id/btn_next"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/btn_standard_width"
         android:layout_height="wrap_content"
-        android:padding="@dimen/standard_btn_padding"
         android:text="@string/btn_forward_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_content" />
@@ -45,8 +43,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/group_btn_moderator"
         android:layout_width="0dp"
-        android:layout_height="125dp"
-
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/btn_next"
         app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toBottomOf="@+id/tv_content">
@@ -54,29 +51,23 @@
 
         <Button
             android:id="@+id/btn_forbid"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/btn_standard_width"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standard_btn_margin"
-            android:layout_marginEnd="@dimen/standard_btn_margin"
+            android:layout_marginEnd="@dimen/standard_btn_padding"
             android:backgroundTint="#D32F2F"
-            android:paddingStart="@dimen/standard_btn_padding"
-            android:paddingEnd="@dimen/standard_btn_padding"
             android:text="@string/btn_forbid_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_approve"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/btn_standard_width"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_btn_margin"
+            android:layout_marginStart="@dimen/standard_btn_padding"
             android:backgroundTint="#388E3C"
-            android:padding="@dimen/standard_btn_padding"
             android:text="@string/btn_approve_title"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_forbid" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -145,13 +136,13 @@
             android:layout_height="wrap_content"
             android:background="@color/standard_list_layer"
             android:inputType="textMultiLine"
-            android:lines="2"
+            android:lines="1"
             android:textAlignment="center"
             android:textSize="@dimen/standard_message_text_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stat_title_tag_content" />
+            app:layout_constraintStart_toEndOf="@+id/tv_stat_title_tag_content"
+            app:layout_constraintTop_toTopOf="@+id/tv_stat_title_tag_content" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -166,8 +157,7 @@
         android:textSize="@dimen/standard_message_text_size"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/tv_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -181,11 +171,11 @@
 
     <ImageView
         android:id="@+id/imgView_error_sign"
-        android:layout_width="230dp"
-        android:layout_height="230dp"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
+        app:layout_constraintHorizontal_bias="0.524"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/error_sign" />

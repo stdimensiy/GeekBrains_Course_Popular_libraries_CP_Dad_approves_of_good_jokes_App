@@ -11,7 +11,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_category_anecdotes"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mcv_portrait_height"
+        android:layout_height="@dimen/mcv_land_height"
         android:layout_margin="@dimen/mcv_margin"
         android:elevation="@dimen/mcv_elevation"
         android:padding="@dimen/mcv_padding"
@@ -65,7 +65,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_stories"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mcv_portrait_height"
+        android:layout_height="@dimen/mcv_land_height"
         android:layout_margin="@dimen/mcv_margin"
         android:elevation="@dimen/mcv_elevation"
         android:padding="@dimen/mcv_padding"
@@ -120,7 +120,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_poems"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mcv_portrait_height"
+        android:layout_height="@dimen/mcv_land_height"
         android:layout_margin="@dimen/mcv_margin"
         android:elevation="@dimen/mcv_elevation"
         android:padding="@dimen/mcv_padding"
@@ -175,7 +175,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_aphorisms"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mcv_portrait_height"
+        android:layout_height="@dimen/mcv_land_height"
         android:layout_margin="@dimen/mcv_margin"
         android:elevation="@dimen/mcv_elevation"
         android:padding="@dimen/mcv_padding"
