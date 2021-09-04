@@ -12,10 +12,10 @@
 
 <p align="center"> ### Текущий результат (Экран выбора режимов просмотра и работы приложения, экран авторизации администратора, экран отображения контента в режиме просмотра, экран отображения контента в режиме модерации)  </p>
 <p align="center">
-  <img src="https://github.com/stdimensiy/GeekBrains_Course_Popular_libraries_HW_My_GIT_API_App/blob/master/snapshots/MyGit_8.jpg" width="150" title="Домашний фрагмент">
-  <img src="https://github.com/stdimensiy/GeekBrains_Course_Popular_libraries_HW_My_GIT_API_App/blob/master/snapshots/MyGit_9.jpg" width="150" title="Домашний фрагмент">
-  <img src="https://github.com/stdimensiy/GeekBrains_Course_Popular_libraries_HW_My_GIT_API_App/blob/master/snapshots/MyGit_11.jpg" width="150" title="Домашний фрагмент">
-  <img src="https://github.com/stdimensiy/GeekBrains_Course_Popular_libraries_HW_My_GIT_API_App/blob/master/snapshots/MyGit_10.jpg" width="150" title="Домашний фрагмент">
+  <img src="https://github.com/stdimensiy/GeekBrains_Course_Popular_libraries_CP_Dad_approves_of_good_jokes_App/blob/master/snapshots/dadapproves_1.jpg" width="150" title="Домашний фрагмент">
+  <img src="https://github.com/stdimensiy/GeekBrains_Course_Popular_libraries_CP_Dad_approves_of_good_jokes_App/blob/master/snapshots/dadapproves_2.jpg" width="150" title="Экран аутентификации пользователя при включении режима модерации">
+  <img src="https://github.com/stdimensiy/GeekBrains_Course_Popular_libraries_CP_Dad_approves_of_good_jokes_App/blob/master/snapshots/dadapproves_3.jpg" width="150" title="Экран отображения контента в режиме модерации">
+  <img src="https://github.com/stdimensiy/GeekBrains_Course_Popular_libraries_CP_Dad_approves_of_good_jokes_App/blob/master/snapshots/dadapproves_4.jpg" width="150" title="Экран отображения контента в режиме простого просмотра">
 
 </p>
 
