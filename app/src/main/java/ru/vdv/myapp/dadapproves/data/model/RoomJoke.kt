@@ -23,10 +23,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity (tableName = "Jokes")
-data class RoomJoke(
+data class RoomJoke (
     val content: String,
     @PrimaryKey(autoGenerate = true) var id: Long = 0,
-    val type: Int,
+    val type: Int?,
     val labelTags: String,
     val isViewedModerator: Boolean,
     val isViewedUser: Boolean,

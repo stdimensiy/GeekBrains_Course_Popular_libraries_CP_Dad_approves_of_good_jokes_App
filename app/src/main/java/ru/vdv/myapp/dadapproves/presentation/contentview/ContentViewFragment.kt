@@ -11,6 +11,7 @@ import moxy.ktx.moxyPresenter
 import ru.vdv.myapp.dadapproves.App
 import ru.vdv.myapp.dadapproves.data.model.JokesRepository
 import ru.vdv.myapp.dadapproves.data.retrofit.RNApiFactory
+import ru.vdv.myapp.dadapproves.data.storage.MyStorageFactory
 import ru.vdv.myapp.dadapproves.databinding.FragmentContentViewBinding
 import ru.vdv.myapp.dadapproves.myschedulers.MySchedulersFactory
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
@@ -23,7 +24,7 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
         ContentViewPresenter(
             modeView,
             category,
-            JokesRepository(RNApiFactory.create()),
+            JokesRepository(RNApiFactory.create(),MyStorageFactory.create(requireContext())),
             MySchedulersFactory.create(),
             App.instance.router
         )

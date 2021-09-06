@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.vdv.myapp.dadapproves.data.model.Joke
 import ru.vdv.myapp.dadapproves.data.model.JokesRepository
+import ru.vdv.myapp.dadapproves.data.model.RoomJoke
 import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.ContentView
 
@@ -34,7 +35,7 @@ class ContentViewPresenter(
                     jokesRepository
                         .getContent(it)
                         .observeOn(schedulers.main())
-                        .subscribe(object : SingleObserver<Joke>{
+                        .subscribe(object : SingleObserver<Joke> {
                             override fun onSubscribe(d: Disposable) {
                                 disposables.add(d)
                             }
@@ -58,8 +59,22 @@ class ContentViewPresenter(
 
     private fun onGetContentSuccess(t: Joke) {
         Log.d("Моя проверка / презентер", "УСПЕХ. Репозиторий вернул результат")
-        Log.d("Моя проверка / презентер", "Объект содержит данные: " +t.content)
+        Log.d("Моя проверка / презентер", "Объект содержит данные: " + t.content)
         viewState.setContent(t.content)
+        Log.d("Моя проверка / презентер", "Теперь создаю новый объект")
+        val currentRoomJoke = RoomJoke(
+            t.content,
+            0,
+            category,
+            "",
+            false,
+            false,
+            false,
+            false,
+            0
+        )
+        jokesRepository.retainContent(currentRoomJoke).observeOn(schedulers.main()).subscribe()
+
     }
 
     fun backPressed(): Boolean {
