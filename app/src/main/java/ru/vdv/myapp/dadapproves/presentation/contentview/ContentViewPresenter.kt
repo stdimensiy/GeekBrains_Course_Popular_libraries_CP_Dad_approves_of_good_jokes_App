@@ -5,6 +5,7 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
 import ru.vdv.myapp.dadapproves.data.model.Joke
 import ru.vdv.myapp.dadapproves.data.model.JokesRepository
@@ -36,39 +37,73 @@ class ContentViewPresenter(
         }
     }
 
-    private fun onGetContentError(e: Throwable) {
-        Log.d("Моя проверка / презентер", "Получена ошибка в ответе репозитория")
+    private fun onLoadNewJokeFromNetError(e: Throwable) {
+        Log.d("Моя проверка / презентер", "Получена ошибка в ответе репозитория: $e")
     }
 
-    private fun onGetContentSuccess(t: Joke) {
+    private fun onLoadNewJokeFromNetSuccess(t: Joke) {
         Log.d("Моя проверка / презентер", "УСПЕХ. Репозиторий вернул результат")
         Log.d("Моя проверка / презентер", "Объект содержит данные: " + t.content)
-        viewState.setContent(t.content)
-        Log.d("Моя проверка / презентер", "Теперь создаю новый объект")
-        val currentRoomJoke = RoomJoke(
-            t.content,
-            0,
-            category,
-            "",
-            false,
-            false,
-            false,
-            false,
-            0
-        )
-        jokesRepository.retainContent(currentRoomJoke).observeOn(schedulers.main()).subscribe(object : SingleObserver<Long>{
-            override fun onSubscribe(d: Disposable) {
-                disposables.add(d)
-            }
+        //сначала проверяем пришедший результат на уникальность
+        disposables += jokesRepository
+            .getCountByContent(t.content)
+            .observeOn(schedulers.main())
+            .subscribe({ joke ->
+                Log.d(
+                    "Моя проверка / презентер",
+                    "Проверка на уникальность выдала результат $joke"
+                )
+                if (joke > 0) {
+                    Log.d(
+                        "Моя проверка / презентер",
+                        "---!!!!--- Загружен неуникальный контент, грузим по новой, старые данные не сохраняем"
+                    )
+                    loadNewJokeFromNet()
+                } else {
+                    viewState.setContent(t.content)
+                    Log.d(
+                        "Моя проверка / презентер",
+                        "Порядок, контент уникален... Теперь создаю новый объект"
+                    )
+                    val currentRoomJoke = RoomJoke(
+                        t.content,
+                        0,
+                        category,
+                        "",
+                        isViewedModerator = false,
+                        isViewedUser = false,
+                        isApproved = false,
+                        isForbidden = false,
+                        estimation = 0
+                    )
+                    jokesRepository.retainContent(currentRoomJoke).observeOn(schedulers.main())
+                        .subscribe(object : SingleObserver<Long> {
+                            override fun onSubscribe(d: Disposable) {
+                                disposables.add(d)
+                            }
 
-            override fun onSuccess(t: Long) {
-                Log.d("Моя проверка / презентер", "Новая запись добавлена $t")
-            }
+                            override fun onSuccess(t: Long) {
+                                Log.d(
+                                    "Моя проверка / презентер",
+                                    "Новая запись добавлена с идентификатором $t"
+                                )
+                            }
 
-            override fun onError(e: Throwable) {
-                onGetContentError(e)
-            }
-        })
+                            override fun onError(e: Throwable) {
+                                onLoadNewJokeFromNetError(e)
+                            }
+                        })
+
+                }
+            },
+                {
+                    Log.d(
+                        "Моя проверка / презентер",
+                        "!!!!!   Проверка на уникальность выдала ошибку"
+                    )
+                }
+
+            )
 
     }
 
@@ -108,11 +143,11 @@ class ContentViewPresenter(
                     }
 
                     override fun onSuccess(t: Joke) {
-                        onGetContentSuccess(t)
+                        onLoadNewJokeFromNetSuccess(t)
                     }
 
                     override fun onError(e: Throwable) {
-                        onGetContentError(e)
+                        onLoadNewJokeFromNetError(e)
                     }
                 })
         }

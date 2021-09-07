@@ -1,9 +1,7 @@
 package ru.vdv.myapp.dadapproves.data.storage
 
 import androidx.room.*
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import ru.vdv.myapp.dadapproves.data.model.Joke
 import ru.vdv.myapp.dadapproves.data.model.RoomJoke
 
 /**
@@ -22,4 +20,7 @@ interface StorageDao {
 
     @Query("SELECT COUNT(*) FROM Jokes WHERE type = :categoryId")
     fun getCountByCategoryId(categoryId: Int): Single<Int>
+
+    @Query("SELECT COUNT(*) FROM Jokes WHERE content = :s")
+    fun getCountByContent(s: String): Single<Int>
 }
