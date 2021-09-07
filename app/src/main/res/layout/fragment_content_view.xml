@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/main_margin_top"
     android:layout_marginStart="@dimen/main_margin_top"
+    android:layout_marginTop="@dimen/main_margin_top"
     android:layout_marginEnd="@dimen/main_margin_top"
     android:layout_marginBottom="@dimen/main_margin_bottom"
     tools:context=".MainActivity">
@@ -40,6 +40,17 @@
         android:text="@string/btn_forward_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+
+    <Button
+        android:id="@+id/btn_loadNewJokeFromNetwork"
+        android:layout_width="379dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#388E3C"
+        android:padding="@dimen/standard_btn_padding"
+        android:text="@string/btn_loadNewJokeFromNetwork_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_btn_moderator" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,8 +177,8 @@
         android:textSize="@dimen/standard_message_text_size"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/tv_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"

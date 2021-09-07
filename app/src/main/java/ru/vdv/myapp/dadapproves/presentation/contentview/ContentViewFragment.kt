@@ -24,7 +24,7 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
         ContentViewPresenter(
             modeView,
             category,
-            JokesRepository(RNApiFactory.create(),MyStorageFactory.create(requireContext())),
+            JokesRepository(RNApiFactory.create(), MyStorageFactory.create(requireContext())),
             MySchedulersFactory.create(),
             App.instance.router
         )
@@ -67,6 +67,7 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     override fun moderatorModeInit() {
         vb?.btnApprove?.setOnClickListener { presenter.btnApprovePressed() }
         vb?.btnForbid?.setOnClickListener { presenter.btnForbidPressed() }
+        vb?.btnLoadNewJokeFromNetwork?.setOnClickListener { presenter.loadNewJokeFromNet() }
         vb?.etTag?.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
@@ -96,12 +97,14 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     override fun showModeratorBtnGroup() {
         vb?.groupBtnModerator?.visibility = View.VISIBLE
         vb?.groupStatModerator?.visibility = View.VISIBLE
+        vb?.btnLoadNewJokeFromNetwork?.visibility = View.VISIBLE
         vb?.tvStatTitleTag?.visibility = View.GONE
     }
 
     override fun hideModeratorBtnGroup() {
         vb?.groupBtnModerator?.visibility = View.GONE
         vb?.groupStatModerator?.visibility = View.GONE
+        vb?.btnLoadNewJokeFromNetwork?.visibility = View.GONE
         vb?.tvStatTitleTag?.visibility = View.VISIBLE
     }
 

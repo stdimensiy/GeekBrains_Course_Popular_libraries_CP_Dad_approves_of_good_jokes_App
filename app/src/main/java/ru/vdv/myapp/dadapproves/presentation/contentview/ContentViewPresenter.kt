@@ -31,24 +31,7 @@ class ContentViewPresenter(
             if (it) {
                 viewState.moderatorModeInit()
                 viewState.showModeratorBtnGroup()
-                category?.let {
-                    jokesRepository
-                        .getContent(it)
-                        .observeOn(schedulers.main())
-                        .subscribe(object : SingleObserver<Joke> {
-                            override fun onSubscribe(d: Disposable) {
-                                disposables.add(d)
-                            }
-
-                            override fun onSuccess(t: Joke) {
-                                onGetContentSuccess(t)
-                            }
-
-                            override fun onError(e: Throwable) {
-                                onGetContentError(e)
-                            }
-                        })
-                }
+                loadNewJokeFromNet()
             }
         }
     }
@@ -111,5 +94,27 @@ class ContentViewPresenter(
 
     override fun onDestroy() {
         disposables.clear()
+    }
+
+    fun loadNewJokeFromNet() {
+        category?.let {
+            disposables.clear()
+            jokesRepository
+                .getContent(it)
+                .observeOn(schedulers.main())
+                .subscribe(object : SingleObserver<Joke> {
+                    override fun onSubscribe(d: Disposable) {
+                        disposables.add(d)
+                    }
+
+                    override fun onSuccess(t: Joke) {
+                        onGetContentSuccess(t)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        onGetContentError(e)
+                    }
+                })
+        }
     }
 }
