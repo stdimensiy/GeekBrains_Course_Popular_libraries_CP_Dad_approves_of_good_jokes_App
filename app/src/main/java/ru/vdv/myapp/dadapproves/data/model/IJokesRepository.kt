@@ -10,5 +10,5 @@ import io.reactivex.rxjava3.core.Single
 interface IJokesRepository {
     fun getContent(groupId: Int): Single<Joke>
     fun getCountByCategoryId(groupId: Int): Single<Int>
-    fun retainContent(joke: RoomJoke): Completable
+    fun retainContent(joke: RoomJoke): Single<Long>
 }

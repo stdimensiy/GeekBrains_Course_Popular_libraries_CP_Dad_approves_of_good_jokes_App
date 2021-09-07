@@ -18,7 +18,7 @@ class JokesRepository(private val api: IDataRNAPI, private val db: MyStorage) : 
         return db.storageDao().getCountByCategoryId(groupId).subscribeOn(MySchedulersFactory.create().io())
     }
 
-    override fun retainContent(joke: RoomJoke): Completable {
+    override fun retainContent(joke: RoomJoke): Single<Long>  {
         Log.d("Моя проверка / репозиторий", "Поытка записи значений в базу")
         return db.storageDao().insert(joke).subscribeOn(MySchedulersFactory.create().io())
     }

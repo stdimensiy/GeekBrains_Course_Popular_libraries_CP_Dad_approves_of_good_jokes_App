@@ -73,7 +73,19 @@ class ContentViewPresenter(
             false,
             0
         )
-        jokesRepository.retainContent(currentRoomJoke).observeOn(schedulers.main()).subscribe()
+        jokesRepository.retainContent(currentRoomJoke).observeOn(schedulers.main()).subscribe(object : SingleObserver<Long>{
+            override fun onSubscribe(d: Disposable) {
+                disposables.add(d)
+            }
+
+            override fun onSuccess(t: Long) {
+                Log.d("Моя проверка / презентер", "Новая запись добавлена $t")
+            }
+
+            override fun onError(e: Throwable) {
+                onGetContentError(e)
+            }
+        })
 
     }
 

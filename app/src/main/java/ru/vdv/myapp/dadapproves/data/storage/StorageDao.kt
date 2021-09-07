@@ -12,7 +12,7 @@ import ru.vdv.myapp.dadapproves.data.model.RoomJoke
 @Dao
 interface StorageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(joke: RoomJoke): Completable
+    fun insert(joke: RoomJoke): Single<Long>
 
     @Update
     fun update(joke: RoomJoke)
