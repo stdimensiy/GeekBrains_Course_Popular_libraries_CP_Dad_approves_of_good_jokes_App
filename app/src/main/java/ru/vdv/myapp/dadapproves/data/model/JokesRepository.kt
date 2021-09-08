@@ -30,4 +30,9 @@ class JokesRepository(private val api: IDataRNAPI, private val db: MyStorage) : 
         )
         return db.storageDao().getCountByContent(s).subscribeOn(MySchedulersFactory.create().io())
     }
+
+    override fun updateContent(joke: RoomJoke): Single<Int> {
+        Log.d("Моя проверка / репозиторий", "Поытка записи значений обновленных данных в базу")
+        return db.storageDao().update(joke).subscribeOn(MySchedulersFactory.create().io())
+    }
 }

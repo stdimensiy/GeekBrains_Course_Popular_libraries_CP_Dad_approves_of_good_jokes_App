@@ -21,6 +21,17 @@ class ContentViewPresenter(
     private val router: Router
 ) : MvpPresenter<ContentView>() {
     private val disposables = CompositeDisposable()
+    private var currentRoomJoke = RoomJoke(
+        "",
+        0,
+        category,
+        "",
+        isViewedModerator = false,
+        isViewedUser = false,
+        isApproved = false,
+        isForbidden = false,
+        estimation = 0
+    )
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -65,7 +76,7 @@ class ContentViewPresenter(
                         "Моя проверка / презентер",
                         "Порядок, контент уникален... Теперь создаю новый объект"
                     )
-                    val currentRoomJoke = RoomJoke(
+                    currentRoomJoke = RoomJoke(
                         t.content,
                         0,
                         category,
@@ -87,6 +98,7 @@ class ContentViewPresenter(
                                     "Моя проверка / презентер",
                                     "Новая запись добавлена с идентификатором $t"
                                 )
+                                currentRoomJoke.id = t
                             }
 
                             override fun onError(e: Throwable) {
@@ -119,9 +131,17 @@ class ContentViewPresenter(
     }
 
     fun btnApprovePressed() {
+        currentRoomJoke.isViewedModerator = true
+        currentRoomJoke.isApproved = true
+        currentRoomJoke.isForbidden = false
+        updateContent()
     }
 
     fun btnForbidPressed() {
+        currentRoomJoke.isViewedModerator = true
+        currentRoomJoke.isApproved = false
+        currentRoomJoke.isForbidden = true
+        updateContent()
     }
 
     fun saveTag(s: String) {
@@ -151,5 +171,25 @@ class ContentViewPresenter(
                     }
                 })
         }
+    }
+
+    private fun updateContent() {
+        jokesRepository
+            .updateContent(currentRoomJoke)
+            .observeOn(schedulers.main())
+            .subscribe(object : SingleObserver<Int> {
+                override fun onSubscribe(d: Disposable) {
+                    disposables.add(d)
+                }
+
+                override fun onSuccess(t: Int) {
+                    Log.d("Моя проверка", "Изменения сохранены для элемента $t")
+                }
+
+                override fun onError(e: Throwable) {
+                    onLoadNewJokeFromNetError(e)
+                }
+            })
+
     }
 }

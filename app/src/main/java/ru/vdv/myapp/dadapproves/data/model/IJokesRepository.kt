@@ -11,4 +11,5 @@ interface IJokesRepository {
     fun getCountByCategoryId(groupId: Int): Single<Int>
     fun retainContent(joke: RoomJoke): Single<Long>
     fun getCountByContent(s: String): Single<Int>
+    fun updateContent(joke: RoomJoke): Single<Int>
 }

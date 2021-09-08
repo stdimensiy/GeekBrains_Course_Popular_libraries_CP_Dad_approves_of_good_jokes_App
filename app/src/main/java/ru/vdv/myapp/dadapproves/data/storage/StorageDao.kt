@@ -13,7 +13,7 @@ interface StorageDao {
     fun insert(joke: RoomJoke): Single<Long>
 
     @Update
-    fun update(joke: RoomJoke)
+    fun update(joke: RoomJoke): Single<Int>
 
     @Delete
     fun delete(joke: RoomJoke)

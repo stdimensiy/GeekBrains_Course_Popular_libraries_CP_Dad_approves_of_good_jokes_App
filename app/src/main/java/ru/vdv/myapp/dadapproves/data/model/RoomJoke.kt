@@ -22,15 +22,15 @@ import kotlinx.parcelize.Parcelize
  */
 
 @Parcelize
-@Entity (tableName = "Jokes")
-data class RoomJoke (
+@Entity(tableName = "Jokes")
+data class RoomJoke(
     val content: String,
     @PrimaryKey(autoGenerate = true) var id: Long = 0,
     val type: Int?,
     val labelTags: String,
-    val isViewedModerator: Boolean,
+    var isViewedModerator: Boolean,
     val isViewedUser: Boolean,
-    val isApproved: Boolean,
-    val isForbidden: Boolean,
+    var isApproved: Boolean,
+    var isForbidden: Boolean,
     val estimation: Int
 ) : Parcelable
