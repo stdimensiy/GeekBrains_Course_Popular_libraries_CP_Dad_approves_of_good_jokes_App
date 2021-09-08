@@ -1,15 +1,14 @@
 package ru.vdv.myapp.dadapproves.presentation.main
 
+import android.util.Log
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
 import ru.vdv.myapp.dadapproves.AndroidScreens
 import ru.vdv.myapp.dadapproves.data.model.JokesRepository
 import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.MainFragmentView
-import ru.vdv.myapp.dadapproves.presentation.interfaces.MainView
 
 class MainPresenter(
     private val schedulers: IMySchedulers,
@@ -17,26 +16,56 @@ class MainPresenter(
     private val router: Router
 ) : MvpPresenter<MainFragmentView>() {
 
-    val disposables = CompositeDisposable()
+    private val disposables = CompositeDisposable()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
-        jokesRepository.getCountByCategoryId(1)
+    }
+
+    override fun attachView(view: MainFragmentView?) {
+        super.attachView(view)
+        getApprovedAnecdotesCount()
+        getApprovedStoriesCount()
+        getApprovedPoemsCount()
+        getApprovedAphorismsCount()
+    }
+
+    private fun getApprovedAphorismsCount() {
+        disposables += jokesRepository.getCountApprovedJokesByCategoryId(4)
             .observeOn(schedulers.main())
-            .subscribe(object : SingleObserver<Int>{
-                override fun onSubscribe(d: Disposable) {
-                    disposables.add(d)
-                }
+            .subscribe(
+                { viewState.setAphorismsCount("Папой одобрено $it афоризмов") },
+                { onRepositoryRequestError(it) })
+    }
 
-                override fun onSuccess(t: Int) {
-                    viewState.setAnecdotesCount(t)
-                }
+    private fun getApprovedPoemsCount() {
+        disposables += jokesRepository.getCountApprovedJokesByCategoryId(3)
+            .observeOn(schedulers.main())
+            .subscribe(
+                { viewState.setPoemsCount("Папой одобрено $it стихотворений") },
+                { onRepositoryRequestError(it) })
+    }
 
-                override fun onError(e: Throwable) {
-                    TODO("Not yet implemented")
-                }
-            })
+    private fun getApprovedStoriesCount() {
+        disposables += jokesRepository.getCountApprovedJokesByCategoryId(2)
+            .observeOn(schedulers.main())
+            .subscribe(
+                { viewState.setStoriesCount("Папой одобрено $it рассказов") },
+                { onRepositoryRequestError(it) })
+    }
+
+    private fun getApprovedAnecdotesCount() {
+        disposables += jokesRepository.getCountApprovedJokesByCategoryId(1)
+            .observeOn(schedulers.main())
+            .subscribe(
+                { viewState.setAnecdotesCount("Папой одобрено $it анекдотов") },
+                { onRepositoryRequestError(it) })
+    }
+
+    private fun onRepositoryRequestError(e: Throwable) {
+        Log.d("Моя проверка", "поток вернул ошибку: $e")
+
     }
 
     fun goToDadLock() {

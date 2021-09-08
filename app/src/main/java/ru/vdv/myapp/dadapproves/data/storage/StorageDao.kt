@@ -21,6 +21,9 @@ interface StorageDao {
     @Query("SELECT COUNT(*) FROM Jokes WHERE type = :categoryId")
     fun getCountByCategoryId(categoryId: Int): Single<Int>
 
+    @Query("SELECT COUNT(*) FROM Jokes WHERE type = :categoryId AND isApproved = 1")
+    fun getCountApprovedJokesByCategoryId(categoryId: Int): Single<Int>
+
     @Query("SELECT COUNT(*) FROM Jokes WHERE content = :s")
     fun getCountByContent(s: String): Single<Int>
 }

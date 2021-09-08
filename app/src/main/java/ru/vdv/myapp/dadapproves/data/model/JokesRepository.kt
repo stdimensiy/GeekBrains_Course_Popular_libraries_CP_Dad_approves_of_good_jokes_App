@@ -18,6 +18,12 @@ class JokesRepository(private val api: IDataRNAPI, private val db: MyStorage) : 
             .subscribeOn(MySchedulersFactory.create().io())
     }
 
+    override fun getCountApprovedJokesByCategoryId(groupId: Int): Single<Int> {
+        Log.d("Моя проверка / репозиторий", "пошел запрос к базе в части определения количества одобренных шуток категории $groupId")
+        return db.storageDao().getCountApprovedJokesByCategoryId(groupId)
+            .subscribeOn(MySchedulersFactory.create().io())
+    }
+
     override fun retainContent(joke: RoomJoke): Single<Long> {
         Log.d("Моя проверка / репозиторий", "Поытка записи значений в базу")
         return db.storageDao().insert(joke).subscribeOn(MySchedulersFactory.create().io())

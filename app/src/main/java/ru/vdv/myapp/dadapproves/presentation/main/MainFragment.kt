@@ -1,6 +1,7 @@
 package ru.vdv.myapp.dadapproves.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import moxy.MvpAppCompatFragment
@@ -13,7 +14,6 @@ import ru.vdv.myapp.dadapproves.databinding.FragmentMainBinding
 import ru.vdv.myapp.dadapproves.myschedulers.MySchedulersFactory
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
 import ru.vdv.myapp.dadapproves.presentation.interfaces.MainFragmentView
-import ru.vdv.myapp.dadapproves.presentation.interfaces.MainView
 
 class MainFragment : MvpAppCompatFragment(), MainFragmentView, BackButtonListener {
     private var vb: FragmentMainBinding? = null
@@ -46,8 +46,20 @@ class MainFragment : MvpAppCompatFragment(), MainFragmentView, BackButtonListene
         vb?.cvDadLock?.setOnClickListener { presenter.goToDadLock() }
     }
 
-    override fun setAnecdotesCount(t: Int) {
-        vb?.tvCatAnecdotesInfo?.text = t.toString()
+    override fun setAnecdotesCount(t: String) {
+        vb?.tvCatAnecdotesInfo?.text = t
+    }
+
+    override fun setStoriesCount(t: String) {
+        vb?.tvCategoryInfoStories?.text = t
+    }
+
+    override fun setPoemsCount(t: String) {
+        vb?.tvCategoryInfoPoems?.text = t
+    }
+
+    override fun setAphorismsCount(t: String) {
+        vb?.tvCategoryInfoAphorisms?.text = t
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()
