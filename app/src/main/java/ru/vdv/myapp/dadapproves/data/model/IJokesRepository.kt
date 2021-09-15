@@ -13,8 +13,6 @@ interface IJokesRepository {
     fun retainContent(joke: RoomJoke): Single<Long>
     fun getCountByContent(s: String): Single<Int>
     fun updateContent(joke: RoomJoke): Single<Int>
-    fun getContentById(jokeId: Long, groupId: Int): Single<List<RoomJoke>>
-    fun getContentUpToId(jokeId: Long, groupId: Int): Single<List<RoomJoke>>
     fun getNextOneApproves(groupId: Int, jokeId: Long): Single<RoomJoke>
     fun getPreviousOneApproves(groupId: Int, jokeId: Long): Single<RoomJoke>
     fun getNextOne(groupId: Int, jokeId: Long): Single<RoomJoke>

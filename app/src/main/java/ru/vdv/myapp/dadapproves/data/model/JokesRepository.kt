@@ -45,18 +45,6 @@ class JokesRepository(private val api: IDataRNAPI, private val db: MyStorage) : 
         return db.storageDao().update(joke).subscribeOn(MySchedulersFactory.create().io())
     }
 
-    override fun getContentById(jokeId: Long, groupId: Int): Single<List<RoomJoke>> {
-        Log.d("Моя проверка / репозиторий", "Лезу в базу за шуткой по идентификатору")
-        return db.storageDao().getContentById(jokeId, groupId)
-            .subscribeOn(MySchedulersFactory.create().io())
-    }
-
-    override fun getContentUpToId(jokeId: Long, groupId: Int): Single<List<RoomJoke>> {
-        Log.d("Моя проверка / репозиторий", "Пытаюсь загрузить предыдущую шутку")
-        return db.storageDao().getContentUpToId(jokeId, groupId)
-            .subscribeOn(MySchedulersFactory.create().io())
-    }
-
     // получить следующий одобренный
     override fun getNextOneApproves(groupId: Int, jokeId: Long): Single<RoomJoke> {
         Log.d("Моя проверка / репозиторий", "Пытаюсь получить следующий одобренный")

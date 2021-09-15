@@ -21,9 +21,6 @@ class ContentViewPresenter(
     private val router: Router
 ) : MvpPresenter<ContentView>() {
     private var currentJoke: RoomJoke? = null
-    private var previousJokeId: Long = 0
-    private var currentJokeId: Long = 0
-    private var nextJokeId: Long = 0
     private val disposables = CompositeDisposable()
     private var currentRoomJoke = RoomJoke(
         "",
@@ -113,14 +110,20 @@ class ContentViewPresenter(
                     }
 
                     override fun onSuccess(t: Int) {
-                        Log.d("Моя проверка / презентер", "Ответ получен! Количество шуток перед текущей: $t")
-                        if (t>0) viewState.showBtnBack()
+                        Log.d(
+                            "Моя проверка / презентер",
+                            "Ответ получен! Количество шуток перед текущей: $t"
+                        )
+                        if (t > 0) viewState.showBtnBack()
                         else viewState.hideBtnBack()
                     }
 
                     override fun onError(e: Throwable) {
-                        Log.d("Моя проверка / презентер", "Получена ошибка при подсчете предыдущих шуток" +
-                                " в ответе репозитория: $e")
+                        Log.d(
+                            "Моя проверка / презентер",
+                            "Получена ошибка при подсчете предыдущих шуток" +
+                                    " в ответе репозитория: $e"
+                        )
                         viewState.hideBtnBack()
                     }
                 })
@@ -133,14 +136,20 @@ class ContentViewPresenter(
                     }
 
                     override fun onSuccess(t: Int) {
-                        Log.d("Моя проверка / презентер", "Ответ получен! Количество шуток ПОСЛЕ текущей: $t")
-                        if (t>0) viewState.showBtnNext()
+                        Log.d(
+                            "Моя проверка / презентер",
+                            "Ответ получен! Количество шуток ПОСЛЕ текущей: $t"
+                        )
+                        if (t > 0) viewState.showBtnNext()
                         else viewState.hideBtnNext()
                     }
 
                     override fun onError(e: Throwable) {
-                        Log.d("Моя проверка / презентер", "Получена ошибка при подсчете следующих шуток" +
-                                " в ответе репозитория: $e")
+                        Log.d(
+                            "Моя проверка / презентер",
+                            "Получена ошибка при подсчете следующих шуток" +
+                                    " в ответе репозитория: $e"
+                        )
                         viewState.hideBtnNext()
                     }
                 })
@@ -175,7 +184,7 @@ class ContentViewPresenter(
                 if (joke > 0) {
                     Log.d(
                         "Моя проверка / презентер",
-                        "---!!!!--- Загружен неуникальный контент, грузим по новой, старые данные не сохраняем"
+                        "---!!!!--- Загружен НЕуникальный контент, грузим по новой, старые данные не сохраняем"
                     )
                     loadNewJokeFromNet()
                 } else {
@@ -224,7 +233,6 @@ class ContentViewPresenter(
                 }
 
             )
-
     }
 
     fun backPressed(): Boolean {
@@ -234,97 +242,10 @@ class ContentViewPresenter(
 
     fun btnBackPressed() {
         loadPreviousJokeFromStorage()
-
-//        //нажата кнопка петехода к предыдущей шутке.
-//        loadJokesById(previousJokeId)
-//        //currentJokeId = previousJokeId
-//        loadJokeUpToId(currentJokeId)
-    }
-
-    private fun loadJokeUpToId(jokeId: Long) {
-        category?.let {
-            jokesRepository
-                .getContentUpToId(jokeId, it)
-                .observeOn(schedulers.main())
-                .subscribe(object : SingleObserver<List<RoomJoke>> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
-
-                    override fun onSuccess(t: List<RoomJoke>) {
-                        onLoadPreviousJokeFromStorageSuccess(t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        onLoadNewJokeFromNetError(e)
-                    }
-                })
-
-        }
-    }
-
-    private fun onLoadPreviousJokeFromStorageSuccess(t: List<RoomJoke>) {
-        if (t.isNotEmpty()) {
-            viewState.showBtnBack()
-            previousJokeId = t[0].id
-        } else {
-            previousJokeId = 0
-            viewState.hideBtnBack()
-        }
-//        Log.d(
-//            "Моя проверка",
-//            "Получен ответ о возможности загрузить предыдущую шутку: всего элементов ${t.size} ид первого: ${t[0].id} ИД последнего ${t[t.size - 1].id}"
-//        )
-
-
     }
 
     fun btnNextPressed() {
         loadNextJokeFromStorage()
-//        //нажата кнопка петехода к следующей шутке.
-//        previousJokeId = currentJokeId
-//        viewState.showBtnBack()
-//        loadJokesById(nextJokeId)
-
-    }
-
-    private fun loadJokesById(jokeId: Long) {
-        category?.let {
-            jokesRepository
-                .getContentById(jokeId, it)
-                .observeOn(schedulers.main())
-                .subscribe(object : SingleObserver<List<RoomJoke>> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
-
-                    override fun onSuccess(t: List<RoomJoke>) {
-                        onLoadNewJokeFromStorageSuccess(t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        onLoadNewJokeFromNetError(e)
-                    }
-                })
-
-        }
-    }
-
-    private fun onLoadNewJokeFromStorageSuccess(t: List<RoomJoke>) {
-        if (t.size > 1) {
-            nextJokeId = t[1].id
-            viewState.showBtnNext()
-            currentJokeId = t[0].id
-            viewState.setContent(t[0].content)
-        } else {
-            if (t.isEmpty()) viewState.hideBtnBack()
-            viewState.hideBtnNext()
-        }
-
-        Log.d(
-            "Моя проверка",
-            "Получен ответ: всего элементов ${t.size} ид первого: ${t[0].id} ИД последнего ${t[t.size - 1].id}"
-        )
     }
 
     fun btnApprovePressed() {
