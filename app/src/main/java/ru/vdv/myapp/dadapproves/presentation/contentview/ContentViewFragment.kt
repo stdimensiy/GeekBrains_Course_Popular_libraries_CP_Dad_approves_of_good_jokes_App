@@ -1,6 +1,7 @@
 package ru.vdv.myapp.dadapproves.presentation.contentview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -112,6 +113,26 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
         vb?.tvNotVerifiedStatusContent?.visibility = View.GONE
         vb?.tvVerifiedApprovedStatusContent?.visibility = View.GONE
         vb?.tvVerifiedForbiddenStatusContent?.visibility = View.GONE
+    }
+
+    override fun showBtnNext() {
+        Log.d("Моя проверка / фрагмент", "Показываю кнопку Next")
+        vb?.btnNext?.isEnabled = true
+    }
+
+    override fun showBtnBack() {
+        Log.d("Моя проверка / фрагмент", "Показываю кнопку Back")
+        vb?.btnBack?.isEnabled = true
+    }
+
+    override fun hideBtnNext() {
+        Log.d("Моя проверка / фрагмент", "Скрываю кнопку Next")
+        vb?.btnNext?.isEnabled = false
+    }
+
+    override fun hideBtnBack() {
+        Log.d("Моя проверка / фрагмент", "Скрываю кнопку Back")
+        vb?.btnBack?.isEnabled = false
     }
 
     override fun showStatusNotVerified() {

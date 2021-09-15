@@ -26,4 +26,28 @@ interface StorageDao {
 
     @Query("SELECT COUNT(*) FROM Jokes WHERE content = :s")
     fun getCountByContent(s: String): Single<Int>
+
+    @Query("SELECT * FROM Jokes WHERE type = :categoryId AND id >= :jokeId LIMIT 2")
+    fun getContentById(jokeId: Long, categoryId: Int): Single<List<RoomJoke>>
+
+    @Query("SELECT * FROM Jokes WHERE type = :categoryId AND id < :jokeId LIMIT 1")
+    fun getContentUpToId(jokeId: Long, categoryId: Int): Single<List<RoomJoke>>
+
+    @Query("SELECT * FROM Jokes WHERE type = :categoryId AND id > :jokeId AND isApproved = 1 LIMIT 1")
+    fun getNextOneApproves(categoryId: Int, jokeId: Long): Single<RoomJoke>
+
+    @Query("SELECT * FROM Jokes WHERE type = :categoryId AND id < :jokeId AND isApproved = 1 ORDER BY id DESC LIMIT 1")
+    fun getPreviousOneApproves(categoryId: Int, jokeId: Long): Single<RoomJoke>
+
+    @Query("SELECT * FROM Jokes WHERE type = :categoryId AND id > :jokeId LIMIT 1")
+    fun getNextOne(categoryId: Int, jokeId: Long): Single<RoomJoke>
+
+    @Query("SELECT * FROM Jokes WHERE type = :categoryId AND id < :jokeId ORDER BY id DESC LIMIT 1")
+    fun getPreviousOne(categoryId: Int, jokeId: Long): Single<RoomJoke>
+
+    @Query("SELECT COUNT(*) FROM Jokes WHERE type = :categoryId AND id < :jokeId")
+    fun getCountPrevious(categoryId: Int, jokeId: Long): Single<Int>
+
+    @Query("SELECT COUNT(*) FROM Jokes WHERE type = :categoryId AND id > :jokeId")
+    fun getCountNext(categoryId: Int, jokeId: Long): Single<Int>
 }
