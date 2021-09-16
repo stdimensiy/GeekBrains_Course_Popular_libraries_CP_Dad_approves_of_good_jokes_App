@@ -29,4 +29,9 @@ interface ContentView : MainView {
     fun showStatusVerifiedAndForbidden()
     fun setTag(s: String)
     fun setContent(s: String)
+    fun disableBtnApprove()
+    fun disableBtnForbidden()
+    fun enableBtnApprove()
+    fun enableBtnForbidden()
+
 }

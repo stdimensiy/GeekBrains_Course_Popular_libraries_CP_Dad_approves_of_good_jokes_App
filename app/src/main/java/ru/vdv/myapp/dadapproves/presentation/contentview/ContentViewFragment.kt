@@ -23,7 +23,7 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     private var vb: FragmentContentViewBinding? = null
     private val presenter: ContentViewPresenter by moxyPresenter {
         ContentViewPresenter(
-            modeView,
+            modeView == true,
             category,
             JokesRepository(RNApiFactory.create(), MyStorageFactory.create(requireContext())),
             MySchedulersFactory.create(),
@@ -153,6 +153,22 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
 
     override fun setContent(s: String) {
         vb?.tvContent?.text = s
+    }
+
+    override fun disableBtnApprove() {
+        vb?.btnApprove?.isEnabled = false
+    }
+
+    override fun disableBtnForbidden() {
+        vb?.btnForbid?.isEnabled = false
+    }
+
+    override fun enableBtnApprove() {
+        vb?.btnApprove?.isEnabled = true
+    }
+
+    override fun enableBtnForbidden() {
+        vb?.btnForbid?.isEnabled = true
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()

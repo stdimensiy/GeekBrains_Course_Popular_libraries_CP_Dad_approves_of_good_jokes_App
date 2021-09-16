@@ -14,7 +14,7 @@ import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.ContentView
 
 class ContentViewPresenter(
-    private var moderationMode: Boolean? = false,
+    private var moderationMode: Boolean = false,
     private val category: Int? = 1,
     private val jokesRepository: JokesRepository,
     private val schedulers: IMySchedulers,
@@ -22,17 +22,6 @@ class ContentViewPresenter(
 ) : MvpPresenter<ContentView>() {
     private var currentJoke: RoomJoke? = null
     private val disposables = CompositeDisposable()
-    private var currentRoomJoke = RoomJoke(
-        "",
-        0,
-        category,
-        "",
-        isViewedModerator = false,
-        isViewedUser = false,
-        isApproved = false,
-        isForbidden = false,
-        estimation = 0
-    )
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -40,35 +29,37 @@ class ContentViewPresenter(
         viewState.hideModeratorBtnGroup()
         viewState.clearStatus()
         viewState.setTag("Пиривет!")
-        moderationMode?.let {
-            if (it) {
-                viewState.moderatorModeInit()
-                viewState.showModeratorBtnGroup()
-                loadNewJokeFromNet()
-            } else {
-                loadNextJokeFromStorage()
-            }
+        if (moderationMode) {
+            viewState.moderatorModeInit()
+            viewState.showModeratorBtnGroup()
         }
+        loadNextJokeFromStorage()
     }
 
     private fun loadNextJokeFromStorage() {
         category?.let {
-            jokesRepository
-                .getNextOne(it, currentJoke?.id ?: 0)
-                .observeOn(schedulers.main())
-                .subscribe(object : SingleObserver<RoomJoke> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
+            (if (moderationMode) {
+                Log.d("Моя проверка / презентер", "Выполняю запрос в режиме модерации")
+                jokesRepository.getNextOne(it, currentJoke?.id ?: 0)
+            } else {
+                Log.d("Моя проверка / презентер", "Выполняю запрос в режиме защищенного просмотра")
+                jokesRepository.getNextOneApproves(it, currentJoke?.id ?: 0)
+            }).apply {
+                observeOn(schedulers.main())
+                    .subscribe(object : SingleObserver<RoomJoke> {
+                        override fun onSubscribe(d: Disposable) {
+                            disposables.add(d)
+                        }
 
-                    override fun onSuccess(t: RoomJoke) {
-                        onLoadJokeFromStorageSuccess(t)
-                    }
+                        override fun onSuccess(t: RoomJoke) {
+                            onLoadJokeFromStorageSuccess(t)
+                        }
 
-                    override fun onError(e: Throwable) {
-                        onLoadNewJokeFromNetError(e)
-                    }
-                })
+                        override fun onError(e: Throwable) {
+                            onLoadNewJokeFromNetError(e)
+                        }
+                    })
+            }
         }
     }
 
@@ -154,14 +145,24 @@ class ContentViewPresenter(
                     }
                 })
         }
-
-
     }
 
     private fun displayingCurrentResult() {
         Log.d("Моя проверка / презентер", "Вывожу результат на экран")
-        viewState.setContent(currentJoke?.content ?: "Пусто")
-        viewState.setTag(currentJoke?.labelTags ?: "")
+        currentJoke?.let {
+            viewState.setContent(it.content)
+            viewState.setTag(it.labelTags)
+            if (it.isApproved) {
+                viewState.showStatusVerifiedAndApproved()
+                viewState.disableBtnApprove()
+                viewState.enableBtnForbidden()
+            }
+            if (it.isForbidden) {
+                viewState.showStatusVerifiedAndForbidden()
+                viewState.disableBtnForbidden()
+                viewState.enableBtnApprove()
+            }
+        }
     }
 
 
@@ -193,7 +194,7 @@ class ContentViewPresenter(
                         "Моя проверка / презентер",
                         "Порядок, контент уникален... Теперь создаю новый объект"
                     )
-                    currentRoomJoke = RoomJoke(
+                    currentJoke = RoomJoke(
                         t.content,
                         0,
                         category,
@@ -204,24 +205,28 @@ class ContentViewPresenter(
                         isForbidden = false,
                         estimation = 0
                     )
-                    jokesRepository.retainContent(currentRoomJoke).observeOn(schedulers.main())
-                        .subscribe(object : SingleObserver<Long> {
-                            override fun onSubscribe(d: Disposable) {
-                                disposables.add(d)
-                            }
+                    currentJoke?.let {
+                        jokesRepository
+                            .retainContent(it)
+                            .observeOn(schedulers.main())
+                            .subscribe(object : SingleObserver<Long> {
+                                override fun onSubscribe(d: Disposable) {
+                                    disposables.add(d)
+                                }
 
-                            override fun onSuccess(t: Long) {
-                                Log.d(
-                                    "Моя проверка / презентер",
-                                    "Новая запись добавлена с идентификатором $t"
-                                )
-                                currentRoomJoke.id = t
-                            }
+                                override fun onSuccess(t: Long) {
+                                    Log.d(
+                                        "Моя проверка / презентер",
+                                        "Новая запись добавлена с идентификатором $t"
+                                    )
+                                    it.id = t
+                                }
 
-                            override fun onError(e: Throwable) {
-                                onLoadNewJokeFromNetError(e)
-                            }
-                        })
+                                override fun onError(e: Throwable) {
+                                    onLoadNewJokeFromNetError(e)
+                                }
+                            })
+                    }
 
                 }
             },
@@ -249,20 +254,22 @@ class ContentViewPresenter(
     }
 
     fun btnApprovePressed() {
-        currentRoomJoke.isViewedModerator = true
-        currentRoomJoke.isApproved = true
-        currentRoomJoke.isForbidden = false
+        currentJoke?.isViewedModerator = true
+        currentJoke?.isApproved = true
+        currentJoke?.isForbidden = false
         updateContent()
     }
 
     fun btnForbidPressed() {
-        currentRoomJoke.isViewedModerator = true
-        currentRoomJoke.isApproved = false
-        currentRoomJoke.isForbidden = true
+        currentJoke?.isViewedModerator = true
+        currentJoke?.isApproved = false
+        currentJoke?.isForbidden = true
         updateContent()
     }
 
     fun saveTag(s: String) {
+        currentJoke?.labelTags = s
+        updateContent()
     }
 
     override fun onDestroy() {
@@ -292,22 +299,24 @@ class ContentViewPresenter(
     }
 
     private fun updateContent() {
-        jokesRepository
-            .updateContent(currentRoomJoke)
-            .observeOn(schedulers.main())
-            .subscribe(object : SingleObserver<Int> {
-                override fun onSubscribe(d: Disposable) {
-                    disposables.add(d)
-                }
+        currentJoke?.let {
+            jokesRepository
+                .updateContent(it)
+                .observeOn(schedulers.main())
+                .subscribe(object : SingleObserver<Int> {
+                    override fun onSubscribe(d: Disposable) {
+                        disposables.add(d)
+                    }
 
-                override fun onSuccess(t: Int) {
-                    Log.d("Моя проверка", "Изменения сохранены для элемента $t")
-                }
+                    override fun onSuccess(t: Int) {
+                        Log.d("Моя проверка", "Изменения сохранены для элемента $t")
+                    }
 
-                override fun onError(e: Throwable) {
-                    onLoadNewJokeFromNetError(e)
-                }
-            })
+                    override fun onError(e: Throwable) {
+                        onLoadNewJokeFromNetError(e)
+                    }
+                })
+        }
 
     }
 }

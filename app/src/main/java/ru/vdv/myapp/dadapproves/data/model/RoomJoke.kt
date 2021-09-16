@@ -27,7 +27,7 @@ data class RoomJoke(
     val content: String,
     @PrimaryKey(autoGenerate = true) var id: Long = 0,
     val type: Int?,
-    val labelTags: String,
+    var labelTags: String,
     var isViewedModerator: Boolean,
     val isViewedUser: Boolean,
     var isApproved: Boolean,
