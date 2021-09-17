@@ -42,6 +42,12 @@ interface StorageDao {
     @Query("SELECT COUNT(*) FROM Jokes WHERE type = :categoryId AND id < :jokeId")
     fun getCountPrevious(categoryId: Int, jokeId: Long): Single<Int>
 
+    @Query("SELECT COUNT(*) FROM Jokes WHERE type = :categoryId AND id < :jokeId AND isApproved = 1")
+    fun getCountApprovesPrevious(categoryId: Int, jokeId: Long): Single<Int>
+
     @Query("SELECT COUNT(*) FROM Jokes WHERE type = :categoryId AND id > :jokeId")
     fun getCountNext(categoryId: Int, jokeId: Long): Single<Int>
+
+    @Query("SELECT COUNT(*) FROM Jokes WHERE type = :categoryId AND id > :jokeId AND isApproved = 1")
+    fun getCountApprovesNext(categoryId: Int, jokeId: Long): Single<Int>
 }

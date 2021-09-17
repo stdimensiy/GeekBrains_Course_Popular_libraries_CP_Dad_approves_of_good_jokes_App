@@ -19,4 +19,6 @@ interface IJokesRepository {
     fun getPreviousOne(groupId: Int, jokeId: Long): Single<RoomJoke>
     fun getCountPrevious(groupId: Int, jokeId: Long): Single<Int>
     fun getCountNext(groupId: Int, jokeId: Long): Single<Int>
+    fun getCountApprovesPrevious(groupId: Int, jokeId: Long): Single<Int>
+    fun getCountApprovesNext(groupId: Int, jokeId: Long): Single<Int>
 }

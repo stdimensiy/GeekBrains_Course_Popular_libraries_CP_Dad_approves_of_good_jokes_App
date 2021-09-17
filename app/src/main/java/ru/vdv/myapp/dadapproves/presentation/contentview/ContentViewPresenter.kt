@@ -39,10 +39,16 @@ class ContentViewPresenter(
     private fun loadNextJokeFromStorage() {
         category?.let {
             (if (moderationMode) {
-                Log.d("Моя проверка / презентер", "Выполняю запрос в режиме модерации")
+                Log.d(
+                    "Моя проверка / презентер",
+                    "Выполняю запрос очередной шутки в режиме модерации"
+                )
                 jokesRepository.getNextOne(it, currentJoke?.id ?: 0)
             } else {
-                Log.d("Моя проверка / презентер", "Выполняю запрос в режиме защищенного просмотра")
+                Log.d(
+                    "Моя проверка / презентер",
+                    "Выполняю запрос очередной шутки в режиме защищенного просмотра"
+                )
                 jokesRepository.getNextOneApproves(it, currentJoke?.id ?: 0)
             }).apply {
                 observeOn(schedulers.main())
@@ -65,22 +71,34 @@ class ContentViewPresenter(
 
     private fun loadPreviousJokeFromStorage() {
         category?.let {
-            jokesRepository
-                .getPreviousOne(it, currentJoke?.id ?: 0)
-                .observeOn(schedulers.main())
-                .subscribe(object : SingleObserver<RoomJoke> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
+            (if (moderationMode) {
+                Log.d(
+                    "Моя проверка / презентер",
+                    "Выполняю запрос очередной шутки в режиме модерации"
+                )
+                jokesRepository.getPreviousOne(it, currentJoke?.id ?: 0)
+            } else {
+                Log.d(
+                    "Моя проверка / презентер",
+                    "Выполняю запрос очередной шутки в режиме защищенного просмотра"
+                )
+                jokesRepository.getPreviousOneApproves(it, currentJoke?.id ?: 0)
+            }).apply {
+                observeOn(schedulers.main())
+                    .subscribe(object : SingleObserver<RoomJoke> {
+                        override fun onSubscribe(d: Disposable) {
+                            disposables.add(d)
+                        }
 
-                    override fun onSuccess(t: RoomJoke) {
-                        onLoadJokeFromStorageSuccess(t)
-                    }
+                        override fun onSuccess(t: RoomJoke) {
+                            onLoadJokeFromStorageSuccess(t)
+                        }
 
-                    override fun onError(e: Throwable) {
-                        onLoadNewJokeFromNetError(e)
-                    }
-                })
+                        override fun onError(e: Throwable) {
+                            onLoadNewJokeFromNetError(e)
+                        }
+                    })
+            }
         }
     }
 
@@ -92,58 +110,82 @@ class ContentViewPresenter(
         displayingCurrentResult()
         //управление кнопками врепед и назад
         category?.let {
-            jokesRepository
-                .getCountPrevious(it, currentJoke?.id ?: 0)
-                .observeOn(schedulers.main())
-                .subscribe(object : SingleObserver<Int> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
+            (if (moderationMode) {
+                Log.d(
+                    "Моя проверка / презентер",
+                    "Выполняю запрос очередной шутки в режиме модерации"
+                )
+                jokesRepository.getCountPrevious(it, currentJoke?.id ?: 0)
+            } else {
+                Log.d(
+                    "Моя проверка / презентер",
+                    "Выполняю запрос очередной шутки в режиме защищенного просмотра"
+                )
+                jokesRepository.getCountApprovesPrevious(it, currentJoke?.id ?: 0)
+            }).apply {
+                observeOn(schedulers.main())
+                    .subscribe(object : SingleObserver<Int> {
+                        override fun onSubscribe(d: Disposable) {
+                            disposables.add(d)
+                        }
 
-                    override fun onSuccess(t: Int) {
-                        Log.d(
-                            "Моя проверка / презентер",
-                            "Ответ получен! Количество шуток перед текущей: $t"
-                        )
-                        if (t > 0) viewState.showBtnBack()
-                        else viewState.hideBtnBack()
-                    }
+                        override fun onSuccess(t: Int) {
+                            Log.d(
+                                "Моя проверка / презентер",
+                                "Ответ получен! Количество шуток перед текущей: $t"
+                            )
+                            if (t > 0) viewState.showBtnBack()
+                            else viewState.hideBtnBack()
+                        }
 
-                    override fun onError(e: Throwable) {
-                        Log.d(
-                            "Моя проверка / презентер",
-                            "Получена ошибка при подсчете предыдущих шуток" +
-                                    " в ответе репозитория: $e"
-                        )
-                        viewState.hideBtnBack()
-                    }
-                })
-            jokesRepository
-                .getCountNext(it, currentJoke?.id ?: 0)
-                .observeOn(schedulers.main())
-                .subscribe(object : SingleObserver<Int> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
+                        override fun onError(e: Throwable) {
+                            Log.d(
+                                "Моя проверка / презентер",
+                                "Получена ошибка при подсчете предыдущих шуток" +
+                                        " в ответе репозитория: $e"
+                            )
+                            viewState.hideBtnBack()
+                        }
+                    })
+            }
+            (if (moderationMode) {
+                Log.d(
+                    "Моя проверка / презентер",
+                    "Выполняю запрос очередной шутки в режиме модерации"
+                )
+                jokesRepository.getCountNext(it, currentJoke?.id ?: 0)
+            } else {
+                Log.d(
+                    "Моя проверка / презентер",
+                    "Выполняю запрос очередной шутки в режиме защищенного просмотра"
+                )
+                jokesRepository.getCountApprovesNext(it, currentJoke?.id ?: 0)
+            }).apply {
+                observeOn(schedulers.main())
+                    .subscribe(object : SingleObserver<Int> {
+                        override fun onSubscribe(d: Disposable) {
+                            disposables.add(d)
+                        }
 
-                    override fun onSuccess(t: Int) {
-                        Log.d(
-                            "Моя проверка / презентер",
-                            "Ответ получен! Количество шуток ПОСЛЕ текущей: $t"
-                        )
-                        if (t > 0) viewState.showBtnNext()
-                        else viewState.hideBtnNext()
-                    }
+                        override fun onSuccess(t: Int) {
+                            Log.d(
+                                "Моя проверка / презентер",
+                                "Ответ получен! Количество шуток ПОСЛЕ текущей: $t"
+                            )
+                            if (t > 0) viewState.showBtnNext()
+                            else viewState.hideBtnNext()
+                        }
 
-                    override fun onError(e: Throwable) {
-                        Log.d(
-                            "Моя проверка / презентер",
-                            "Получена ошибка при подсчете следующих шуток" +
-                                    " в ответе репозитория: $e"
-                        )
-                        viewState.hideBtnNext()
-                    }
-                })
+                        override fun onError(e: Throwable) {
+                            Log.d(
+                                "Моя проверка / презентер",
+                                "Получена ошибка при подсчете следующих шуток" +
+                                        " в ответе репозитория: $e"
+                            )
+                            viewState.hideBtnNext()
+                        }
+                    })
+            }
         }
     }
 

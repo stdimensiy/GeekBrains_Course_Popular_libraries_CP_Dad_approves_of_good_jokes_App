@@ -90,4 +90,18 @@ class JokesRepository(private val api: IDataRNAPI, private val db: MyStorage) : 
             .getCountNext(groupId, jokeId)
             .subscribeOn(MySchedulersFactory.create().io())
     }
+
+    override fun getCountApprovesPrevious(groupId: Int, jokeId: Long): Single<Int> {
+        Log.d("Моя проверка / репозиторий", "Пытаюсь получить количество ОДОБРЕННЫХ шуток предшевствующих текущей")
+        return db.storageDao()
+            .getCountApprovesPrevious(groupId, jokeId)
+            .subscribeOn(MySchedulersFactory.create().io())
+    }
+
+    override fun getCountApprovesNext(groupId: Int, jokeId: Long): Single<Int> {
+        Log.d("Моя проверка / репозиторий", "Пытаюсь получить количество ОДОБРЕННЫХ уток пследующих за текущей")
+        return db.storageDao()
+            .getCountApprovesNext(groupId, jokeId)
+            .subscribeOn(MySchedulersFactory.create().io())
+    }
 }
