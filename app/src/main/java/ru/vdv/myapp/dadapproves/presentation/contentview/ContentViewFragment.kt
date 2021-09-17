@@ -23,6 +23,7 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     private var vb: FragmentContentViewBinding? = null
     private val presenter: ContentViewPresenter by moxyPresenter {
         ContentViewPresenter(
+            requireContext(),
             modeView == true,
             category,
             JokesRepository(RNApiFactory.create(), MyStorageFactory.create(requireContext())),
@@ -169,6 +170,16 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
 
     override fun enableBtnForbidden() {
         vb?.btnForbid?.isEnabled = true
+    }
+
+    override fun enableBtnLoadNewJokeFromNetwork() {
+        Log.d("Моя проверка / фрагмент", "Делаю кнопку загрузки активной")
+        vb?.btnLoadNewJokeFromNetwork?.isEnabled = true
+    }
+
+    override fun disableBtnLoadNewJokeFromNetwork() {
+        Log.d("Моя проверка / фрагмент", "Деактивирую кнопку загрузки")
+        vb?.btnLoadNewJokeFromNetwork?.isEnabled = false
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()

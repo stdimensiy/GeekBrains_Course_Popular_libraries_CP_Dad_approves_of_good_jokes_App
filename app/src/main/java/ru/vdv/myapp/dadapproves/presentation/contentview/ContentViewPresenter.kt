@@ -1,6 +1,8 @@
 package ru.vdv.myapp.dadapproves.presentation.contentview
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -9,11 +11,14 @@ import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
 import ru.vdv.myapp.dadapproves.data.model.Joke
 import ru.vdv.myapp.dadapproves.data.model.JokesRepository
+import ru.vdv.myapp.dadapproves.data.model.NetworkState
 import ru.vdv.myapp.dadapproves.data.model.RoomJoke
+import ru.vdv.myapp.dadapproves.data.net.NetworkStateObservable
 import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.ContentView
 
 class ContentViewPresenter(
+    private  val context: Context,
     private var moderationMode: Boolean = false,
     private val category: Int? = 1,
     private val jokesRepository: JokesRepository,
@@ -22,6 +27,10 @@ class ContentViewPresenter(
 ) : MvpPresenter<ContentView>() {
     private var currentJoke: RoomJoke? = null
     private val disposables = CompositeDisposable()
+//    private val connect = NetworkStateObservable(context)
+//        .doOnNext{onNext(0, it)}
+//        .publish()
+//        .connect()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -34,6 +43,19 @@ class ContentViewPresenter(
             viewState.showModeratorBtnGroup()
         }
         loadNextJokeFromStorage()
+        disposables += NetworkStateObservable(context)
+            .doOnNext{onNext(it)}
+            .publish()
+            .connect()
+    }
+
+    private fun onNext(networkState: NetworkState) {
+        Toast.makeText(context, "Сеть: ${networkState.tag}", Toast.LENGTH_SHORT).show()
+        when(networkState){
+            NetworkState.DISCONNECTED -> viewState.disableBtnLoadNewJokeFromNetwork()
+            NetworkState.CONNECTED -> viewState.enableBtnLoadNewJokeFromNetwork()
+        }
+
     }
 
     private fun loadNextJokeFromStorage() {
@@ -315,12 +337,15 @@ class ContentViewPresenter(
     }
 
     override fun onDestroy() {
+        Log.d(
+            "Моя проверка / презентер",
+            "!!!!!   Сработал onDestroy")
         disposables.clear()
     }
 
     fun loadNewJokeFromNet() {
         category?.let {
-            disposables.clear()
+            //disposables.clear()
             jokesRepository
                 .getContent(it)
                 .observeOn(schedulers.main())
