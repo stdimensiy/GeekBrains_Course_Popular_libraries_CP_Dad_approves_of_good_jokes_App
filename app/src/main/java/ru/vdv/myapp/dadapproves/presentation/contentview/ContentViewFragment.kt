@@ -9,6 +9,9 @@ import androidx.core.os.bundleOf
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.vdv.myapp.dadapproves.App
+import ru.vdv.myapp.dadapproves.data.model.JokesRepository
+import ru.vdv.myapp.dadapproves.data.retrofit.RNApiFactory
+import ru.vdv.myapp.dadapproves.data.storage.MyStorageFactory
 import ru.vdv.myapp.dadapproves.databinding.FragmentContentViewBinding
 import ru.vdv.myapp.dadapproves.myschedulers.MySchedulersFactory
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
@@ -19,8 +22,10 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     private var vb: FragmentContentViewBinding? = null
     private val presenter: ContentViewPresenter by moxyPresenter {
         ContentViewPresenter(
-            modeView,
+            requireContext(),
+            modeView == true,
             category,
+            JokesRepository(RNApiFactory.create(), MyStorageFactory.create(requireContext())),
             MySchedulersFactory.create(),
             App.instance.router
         )
@@ -63,6 +68,7 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     override fun moderatorModeInit() {
         vb?.btnApprove?.setOnClickListener { presenter.btnApprovePressed() }
         vb?.btnForbid?.setOnClickListener { presenter.btnForbidPressed() }
+        vb?.btnLoadNewJokeFromNetwork?.setOnClickListener { presenter.loadNewJokeFromNet() }
         vb?.etTag?.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
@@ -92,12 +98,14 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     override fun showModeratorBtnGroup() {
         vb?.groupBtnModerator?.visibility = View.VISIBLE
         vb?.groupStatModerator?.visibility = View.VISIBLE
+        vb?.btnLoadNewJokeFromNetwork?.visibility = View.VISIBLE
         vb?.tvStatTitleTag?.visibility = View.GONE
     }
 
     override fun hideModeratorBtnGroup() {
         vb?.groupBtnModerator?.visibility = View.GONE
         vb?.groupStatModerator?.visibility = View.GONE
+        vb?.btnLoadNewJokeFromNetwork?.visibility = View.GONE
         vb?.tvStatTitleTag?.visibility = View.VISIBLE
     }
 
@@ -105,6 +113,22 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
         vb?.tvNotVerifiedStatusContent?.visibility = View.GONE
         vb?.tvVerifiedApprovedStatusContent?.visibility = View.GONE
         vb?.tvVerifiedForbiddenStatusContent?.visibility = View.GONE
+    }
+
+    override fun enableBtnNext() {
+        vb?.btnNext?.isEnabled = true
+    }
+
+    override fun enableBtnBack() {
+        vb?.btnBack?.isEnabled = true
+    }
+
+    override fun disableBtnNext() {
+        vb?.btnNext?.isEnabled = false
+    }
+
+    override fun disableBtnBack() {
+        vb?.btnBack?.isEnabled = false
     }
 
     override fun showStatusNotVerified() {
@@ -125,6 +149,30 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
 
     override fun setContent(s: String) {
         vb?.tvContent?.text = s
+    }
+
+    override fun disableBtnApprove() {
+        vb?.btnApprove?.isEnabled = false
+    }
+
+    override fun disableBtnForbidden() {
+        vb?.btnForbid?.isEnabled = false
+    }
+
+    override fun enableBtnApprove() {
+        vb?.btnApprove?.isEnabled = true
+    }
+
+    override fun enableBtnForbidden() {
+        vb?.btnForbid?.isEnabled = true
+    }
+
+    override fun enableBtnLoadNewJokeFromNetwork() {
+        vb?.btnLoadNewJokeFromNetwork?.isEnabled = true
+    }
+
+    override fun disableBtnLoadNewJokeFromNetwork() {
+        vb?.btnLoadNewJokeFromNetwork?.isEnabled = false
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()

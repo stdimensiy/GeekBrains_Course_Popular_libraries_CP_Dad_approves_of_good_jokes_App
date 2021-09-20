@@ -5,6 +5,7 @@ buildscript {
     ext.rxjavaVersion = "3.0.13"
     ext.rxkotlinVersion = "3.0.1"
     ext.rxandroidVersion = "3.0.0"
+    ext.room_version = "2.3.0"
     repositories {
         google()
         mavenCentral()

@@ -7,7 +7,6 @@ import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.AuthView
 
 class DadLockPresenter(
-    private val schedulers: IMySchedulers,
     private val router: Router
 ) : MvpPresenter<AuthView>() {
 

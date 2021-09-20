@@ -22,4 +22,9 @@
     <string name="stat_title_teg_content_label">Ключевые слова или заголовок:</string>
     <string name="btn_forbid_title">Запретить</string>
     <string name="btn_approve_title">Одобрить</string>
+    <string name="btn_loadNewJokeFromNetwork_title">Загрузить новую шутки из сети</string>
+    <string name="non_unique_content">Такая шутка уже есть</string>
+    <string name="changes_were_saved_successfully">Изменения успешно сохранены</string>
+    <string name="net_error">"Сетевая ошибка: "</string>
+    <string name="storage_error">"Ошибка обращения к внутренней базе данных: "</string>
 </resources>
