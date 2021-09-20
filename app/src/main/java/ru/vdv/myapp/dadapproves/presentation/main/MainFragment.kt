@@ -1,7 +1,6 @@
 package ru.vdv.myapp.dadapproves.presentation.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import moxy.MvpAppCompatFragment
@@ -19,6 +18,7 @@ class MainFragment : MvpAppCompatFragment(), MainFragmentView, BackButtonListene
     private var vb: FragmentMainBinding? = null
     private val presenter: MainPresenter by moxyPresenter {
         MainPresenter(
+            requireContext(),
             MySchedulersFactory.create(),
             JokesRepository(RNApiFactory.create(), MyStorageFactory.create(requireContext())),
             App.instance.router

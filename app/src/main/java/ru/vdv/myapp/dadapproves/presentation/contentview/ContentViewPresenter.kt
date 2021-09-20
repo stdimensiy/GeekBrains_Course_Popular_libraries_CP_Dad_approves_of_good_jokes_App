@@ -1,14 +1,12 @@
 package ru.vdv.myapp.dadapproves.presentation.contentview
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
+import ru.vdv.myapp.dadapproves.R
 import ru.vdv.myapp.dadapproves.data.model.Joke
 import ru.vdv.myapp.dadapproves.data.model.JokesRepository
 import ru.vdv.myapp.dadapproves.data.model.NetworkState
@@ -18,7 +16,7 @@ import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.ContentView
 
 class ContentViewPresenter(
-    private  val context: Context,
+    private val context: Context,
     private var moderationMode: Boolean = false,
     private val category: Int? = 1,
     private val jokesRepository: JokesRepository,
@@ -27,10 +25,6 @@ class ContentViewPresenter(
 ) : MvpPresenter<ContentView>() {
     private var currentJoke: RoomJoke? = null
     private val disposables = CompositeDisposable()
-//    private val connect = NetworkStateObservable(context)
-//        .doOnNext{onNext(0, it)}
-//        .publish()
-//        .connect()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -44,14 +38,14 @@ class ContentViewPresenter(
         }
         loadNextJokeFromStorage()
         disposables += NetworkStateObservable(context)
-            .doOnNext{onNext(it)}
+            .doOnNext { onNext(it) }
             .publish()
             .connect()
     }
 
     private fun onNext(networkState: NetworkState) {
         Toast.makeText(context, "Сеть: ${networkState.tag}", Toast.LENGTH_SHORT).show()
-        when(networkState){
+        when (networkState) {
             NetworkState.DISCONNECTED -> viewState.disableBtnLoadNewJokeFromNetwork()
             NetworkState.CONNECTED -> viewState.enableBtnLoadNewJokeFromNetwork()
         }
@@ -59,160 +53,67 @@ class ContentViewPresenter(
     }
 
     private fun loadNextJokeFromStorage() {
-        category?.let {
-            (if (moderationMode) {
-                Log.d(
-                    "Моя проверка / презентер",
-                    "Выполняю запрос очередной шутки в режиме модерации"
-                )
-                jokesRepository.getNextOne(it, currentJoke?.id ?: 0)
+        category?.let { categoryId ->
+            val apply = (if (moderationMode) {
+                jokesRepository.getNextOne(categoryId, currentJoke?.id ?: 0)
             } else {
-                Log.d(
-                    "Моя проверка / презентер",
-                    "Выполняю запрос очередной шутки в режиме защищенного просмотра"
-                )
-                jokesRepository.getNextOneApproves(it, currentJoke?.id ?: 0)
-            }).apply {
-                observeOn(schedulers.main())
-                    .subscribe(object : SingleObserver<RoomJoke> {
-                        override fun onSubscribe(d: Disposable) {
-                            disposables.add(d)
-                        }
-
-                        override fun onSuccess(t: RoomJoke) {
-                            onLoadJokeFromStorageSuccess(t)
-                        }
-
-                        override fun onError(e: Throwable) {
-                            onLoadNewJokeFromNetError(e)
-                        }
-                    })
-            }
+                jokesRepository.getNextOneApproves(categoryId, currentJoke?.id ?: 0)
+            })
+            disposables += apply.observeOn(schedulers.main())
+                .subscribe(
+                    { onLoadJokeFromStorageSuccess(it) },
+                    { onLoadNewJokeFromStorageError(it) })
         }
     }
 
     private fun loadPreviousJokeFromStorage() {
-        category?.let {
-            (if (moderationMode) {
-                Log.d(
-                    "Моя проверка / презентер",
-                    "Выполняю запрос очередной шутки в режиме модерации"
-                )
-                jokesRepository.getPreviousOne(it, currentJoke?.id ?: 0)
+        category?.let { categoryId ->
+            val apply = (if (moderationMode) {
+                jokesRepository.getPreviousOne(categoryId, currentJoke?.id ?: 0)
             } else {
-                Log.d(
-                    "Моя проверка / презентер",
-                    "Выполняю запрос очередной шутки в режиме защищенного просмотра"
-                )
-                jokesRepository.getPreviousOneApproves(it, currentJoke?.id ?: 0)
-            }).apply {
-                observeOn(schedulers.main())
-                    .subscribe(object : SingleObserver<RoomJoke> {
-                        override fun onSubscribe(d: Disposable) {
-                            disposables.add(d)
-                        }
-
-                        override fun onSuccess(t: RoomJoke) {
-                            onLoadJokeFromStorageSuccess(t)
-                        }
-
-                        override fun onError(e: Throwable) {
-                            onLoadNewJokeFromNetError(e)
-                        }
-                    })
-            }
+                jokesRepository.getPreviousOneApproves(categoryId, currentJoke?.id ?: 0)
+            })
+            disposables += apply.observeOn(schedulers.main())
+                .subscribe(
+                    { onLoadJokeFromStorageSuccess(it) },
+                    { onLoadNewJokeFromStorageError(it) })
         }
     }
 
     private fun onLoadJokeFromStorageSuccess(t: RoomJoke) {
-        Log.d("Моя проверка / презентер", "УСПЕХ. Репозиторий вернул из базы результат")
-        Log.d("Моя проверка / презентер", "Объект имеет идентификатор: " + t.id)
         currentJoke = t
         // комплексная выдача результата на эеран
         displayingCurrentResult()
         //управление кнопками врепед и назад
-        category?.let {
-            (if (moderationMode) {
-                Log.d(
-                    "Моя проверка / презентер",
-                    "Выполняю запрос очередной шутки в режиме модерации"
-                )
-                jokesRepository.getCountPrevious(it, currentJoke?.id ?: 0)
+        category?.let { categoryId ->
+            val countPrevious = (if (moderationMode) {
+                jokesRepository.getCountPrevious(categoryId, currentJoke?.id ?: 0)
             } else {
-                Log.d(
-                    "Моя проверка / презентер",
-                    "Выполняю запрос очередной шутки в режиме защищенного просмотра"
-                )
-                jokesRepository.getCountApprovesPrevious(it, currentJoke?.id ?: 0)
-            }).apply {
-                observeOn(schedulers.main())
-                    .subscribe(object : SingleObserver<Int> {
-                        override fun onSubscribe(d: Disposable) {
-                            disposables.add(d)
-                        }
-
-                        override fun onSuccess(t: Int) {
-                            Log.d(
-                                "Моя проверка / презентер",
-                                "Ответ получен! Количество шуток перед текущей: $t"
-                            )
-                            if (t > 0) viewState.showBtnBack()
-                            else viewState.hideBtnBack()
-                        }
-
-                        override fun onError(e: Throwable) {
-                            Log.d(
-                                "Моя проверка / презентер",
-                                "Получена ошибка при подсчете предыдущих шуток" +
-                                        " в ответе репозитория: $e"
-                            )
-                            viewState.hideBtnBack()
-                        }
-                    })
-            }
-            (if (moderationMode) {
-                Log.d(
-                    "Моя проверка / презентер",
-                    "Выполняю запрос очередной шутки в режиме модерации"
-                )
-                jokesRepository.getCountNext(it, currentJoke?.id ?: 0)
+                jokesRepository.getCountApprovesPrevious(categoryId, currentJoke?.id ?: 0)
+            })
+            disposables += countPrevious.observeOn(schedulers.main())
+                .subscribe({
+                    if (it > 0) viewState.enableBtnBack()
+                    else viewState.disableBtnBack()
+                }, {
+                    viewState.disableBtnBack()
+                })
+            val countNext = (if (moderationMode) {
+                jokesRepository.getCountNext(categoryId, currentJoke?.id ?: 0)
             } else {
-                Log.d(
-                    "Моя проверка / презентер",
-                    "Выполняю запрос очередной шутки в режиме защищенного просмотра"
-                )
-                jokesRepository.getCountApprovesNext(it, currentJoke?.id ?: 0)
-            }).apply {
-                observeOn(schedulers.main())
-                    .subscribe(object : SingleObserver<Int> {
-                        override fun onSubscribe(d: Disposable) {
-                            disposables.add(d)
-                        }
-
-                        override fun onSuccess(t: Int) {
-                            Log.d(
-                                "Моя проверка / презентер",
-                                "Ответ получен! Количество шуток ПОСЛЕ текущей: $t"
-                            )
-                            if (t > 0) viewState.showBtnNext()
-                            else viewState.hideBtnNext()
-                        }
-
-                        override fun onError(e: Throwable) {
-                            Log.d(
-                                "Моя проверка / презентер",
-                                "Получена ошибка при подсчете следующих шуток" +
-                                        " в ответе репозитория: $e"
-                            )
-                            viewState.hideBtnNext()
-                        }
-                    })
-            }
+                jokesRepository.getCountApprovesNext(categoryId, currentJoke?.id ?: 0)
+            })
+            countNext.observeOn(schedulers.main())
+                .subscribe(
+                    {
+                        if (it > 0) viewState.enableBtnNext()
+                        else viewState.disableBtnNext()
+                    },
+                    { viewState.disableBtnNext() })
         }
     }
 
     private fun displayingCurrentResult() {
-        Log.d("Моя проверка / презентер", "Вывожу результат на экран")
         currentJoke?.let {
             viewState.setContent(it.content)
             viewState.setTag(it.labelTags)
@@ -226,38 +127,38 @@ class ContentViewPresenter(
                 viewState.disableBtnForbidden()
                 viewState.enableBtnApprove()
             }
+            if (!it.isApproved and !it.isForbidden) {
+                viewState.showStatusNotVerified()
+                viewState.enableBtnForbidden()
+                viewState.enableBtnApprove()
+            }
         }
     }
 
 
     private fun onLoadNewJokeFromNetError(e: Throwable) {
-        Log.d("Моя проверка / презентер", "Получена ошибка в ответе репозитория: $e")
+        Toast.makeText(context, context.getString(R.string.net_error) + " $e", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun onLoadNewJokeFromStorageError(e: Throwable) {
+        Toast.makeText(
+            context,
+            context.getString(R.string.storage_error) + " $e",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun onLoadNewJokeFromNetSuccess(t: Joke) {
-        Log.d("Моя проверка / презентер", "УСПЕХ. Репозиторий вернул результат")
-        Log.d("Моя проверка / презентер", "Объект содержит данные: " + t.content)
         //сначала проверяем пришедший результат на уникальность
         disposables += jokesRepository
             .getCountByContent(t.content)
             .observeOn(schedulers.main())
             .subscribe({ joke ->
-                Log.d(
-                    "Моя проверка / презентер",
-                    "Проверка на уникальность выдала результат $joke"
-                )
                 if (joke > 0) {
-                    Log.d(
-                        "Моя проверка / презентер",
-                        "---!!!!--- Загружен НЕуникальный контент, грузим по новой, старые данные не сохраняем"
-                    )
                     loadNewJokeFromNet()
                 } else {
                     viewState.setContent(t.content)
-                    Log.d(
-                        "Моя проверка / презентер",
-                        "Порядок, контент уникален... Теперь создаю новый объект"
-                    )
                     currentJoke = RoomJoke(
                         t.content,
                         0,
@@ -269,36 +170,29 @@ class ContentViewPresenter(
                         isForbidden = false,
                         estimation = 0
                     )
-                    currentJoke?.let {
-                        jokesRepository
-                            .retainContent(it)
+                    currentJoke?.let { roomJoke ->
+                        disposables += jokesRepository
+                            .retainContent(roomJoke)
                             .observeOn(schedulers.main())
-                            .subscribe(object : SingleObserver<Long> {
-                                override fun onSubscribe(d: Disposable) {
-                                    disposables.add(d)
-                                }
-
-                                override fun onSuccess(t: Long) {
-                                    Log.d(
-                                        "Моя проверка / презентер",
-                                        "Новая запись добавлена с идентификатором $t"
-                                    )
-                                    it.id = t
-                                }
-
-                                override fun onError(e: Throwable) {
-                                    onLoadNewJokeFromNetError(e)
-                                }
+                            .subscribe({
+                                roomJoke.id = it
+                                viewState.enableBtnApprove()
+                                viewState.enableBtnForbidden()
+                                viewState.disableBtnNext()
+                                viewState.enableBtnBack()
+                            }, {
+                                onLoadNewJokeFromNetError(it)
                             })
                     }
-
                 }
             },
                 {
-                    Log.d(
-                        "Моя проверка / презентер",
-                        "!!!!!   Проверка на уникальность выдала ошибку"
-                    )
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.non_unique_content),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    loadNextJokeFromStorage()
                 }
 
             )
@@ -336,54 +230,39 @@ class ContentViewPresenter(
         updateContent()
     }
 
-    override fun onDestroy() {
-        Log.d(
-            "Моя проверка / презентер",
-            "!!!!!   Сработал onDestroy")
-        disposables.clear()
-    }
-
     fun loadNewJokeFromNet() {
-        category?.let {
-            //disposables.clear()
-            jokesRepository
-                .getContent(it)
+        category?.let { categoryId ->
+            disposables += jokesRepository
+                .getContent(categoryId)
                 .observeOn(schedulers.main())
-                .subscribe(object : SingleObserver<Joke> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
-
-                    override fun onSuccess(t: Joke) {
-                        onLoadNewJokeFromNetSuccess(t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        onLoadNewJokeFromNetError(e)
-                    }
+                .subscribe({
+                    onLoadNewJokeFromNetSuccess(it)
+                }, {
+                    onLoadNewJokeFromNetError(it)
                 })
         }
     }
 
     private fun updateContent() {
-        currentJoke?.let {
-            jokesRepository
-                .updateContent(it)
+        currentJoke?.let { roomJoke ->
+            disposables += jokesRepository
+                .updateContent(roomJoke)
                 .observeOn(schedulers.main())
-                .subscribe(object : SingleObserver<Int> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
-
-                    override fun onSuccess(t: Int) {
-                        Log.d("Моя проверка", "Изменения сохранены для элемента $t")
-                    }
-
-                    override fun onError(e: Throwable) {
-                        onLoadNewJokeFromNetError(e)
-                    }
+                .subscribe({
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.changes_were_saved_successfully),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    if (roomJoke.isForbidden) viewState.disableBtnForbidden()
+                    if (roomJoke.isApproved) viewState.disableBtnApprove()
+                }, {
+                    onLoadNewJokeFromNetError(it)
                 })
         }
+    }
 
+    override fun onDestroy() {
+        disposables.clear()
     }
 }

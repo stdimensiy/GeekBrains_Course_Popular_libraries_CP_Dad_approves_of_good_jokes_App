@@ -9,7 +9,6 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.vdv.myapp.dadapproves.App
 import ru.vdv.myapp.dadapproves.databinding.FragmentDadLockBinding
-import ru.vdv.myapp.dadapproves.myschedulers.MySchedulersFactory
 import ru.vdv.myapp.dadapproves.presentation.interfaces.AuthView
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
 
@@ -17,7 +16,6 @@ class DadLockFragment : MvpAppCompatFragment(), AuthView, BackButtonListener {
     private var vb: FragmentDadLockBinding? = null
     private val presenter: DadLockPresenter by moxyPresenter {
         DadLockPresenter(
-            MySchedulersFactory.create(),
             App.instance.router
         )
     }

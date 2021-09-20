@@ -1,16 +1,19 @@
 package ru.vdv.myapp.dadapproves.presentation.main
 
-import android.util.Log
+import android.content.Context
+import android.widget.Toast
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
 import ru.vdv.myapp.dadapproves.AndroidScreens
+import ru.vdv.myapp.dadapproves.R
 import ru.vdv.myapp.dadapproves.data.model.JokesRepository
 import ru.vdv.myapp.dadapproves.myschedulers.IMySchedulers
 import ru.vdv.myapp.dadapproves.presentation.interfaces.MainFragmentView
 
 class MainPresenter(
+    private val context: Context,
     private val schedulers: IMySchedulers,
     private val jokesRepository: JokesRepository,
     private val router: Router
@@ -64,8 +67,11 @@ class MainPresenter(
     }
 
     private fun onRepositoryRequestError(e: Throwable) {
-        Log.d("Моя проверка", "поток вернул ошибку: $e")
-
+        Toast.makeText(
+            context,
+            context.getString(R.string.storage_error) + " $e",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     fun goToDadLock() {

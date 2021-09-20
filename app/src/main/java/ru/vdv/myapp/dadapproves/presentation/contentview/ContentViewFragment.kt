@@ -1,7 +1,6 @@
 package ru.vdv.myapp.dadapproves.presentation.contentview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -116,23 +115,19 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
         vb?.tvVerifiedForbiddenStatusContent?.visibility = View.GONE
     }
 
-    override fun showBtnNext() {
-        Log.d("Моя проверка / фрагмент", "Показываю кнопку Next")
+    override fun enableBtnNext() {
         vb?.btnNext?.isEnabled = true
     }
 
-    override fun showBtnBack() {
-        Log.d("Моя проверка / фрагмент", "Показываю кнопку Back")
+    override fun enableBtnBack() {
         vb?.btnBack?.isEnabled = true
     }
 
-    override fun hideBtnNext() {
-        Log.d("Моя проверка / фрагмент", "Скрываю кнопку Next")
+    override fun disableBtnNext() {
         vb?.btnNext?.isEnabled = false
     }
 
-    override fun hideBtnBack() {
-        Log.d("Моя проверка / фрагмент", "Скрываю кнопку Back")
+    override fun disableBtnBack() {
         vb?.btnBack?.isEnabled = false
     }
 
@@ -173,12 +168,10 @@ class ContentViewFragment : MvpAppCompatFragment(), ContentView,
     }
 
     override fun enableBtnLoadNewJokeFromNetwork() {
-        Log.d("Моя проверка / фрагмент", "Делаю кнопку загрузки активной")
         vb?.btnLoadNewJokeFromNetwork?.isEnabled = true
     }
 
     override fun disableBtnLoadNewJokeFromNetwork() {
-        Log.d("Моя проверка / фрагмент", "Деактивирую кнопку загрузки")
         vb?.btnLoadNewJokeFromNetwork?.isEnabled = false
     }
 

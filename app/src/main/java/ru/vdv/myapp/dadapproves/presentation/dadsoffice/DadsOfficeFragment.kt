@@ -13,12 +13,12 @@ import ru.vdv.myapp.dadapproves.databinding.FragmentDadsOfficeBinding
 import ru.vdv.myapp.dadapproves.myschedulers.MySchedulersFactory
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
 import ru.vdv.myapp.dadapproves.presentation.interfaces.MainFragmentView
-import ru.vdv.myapp.dadapproves.presentation.interfaces.MainView
 
 class DadsOfficeFragment : MvpAppCompatFragment(), MainFragmentView, BackButtonListener {
     private var vb: FragmentDadsOfficeBinding? = null
     private val presenter: DadsOfficePresenter by moxyPresenter {
         DadsOfficePresenter(
+            requireContext(),
             MySchedulersFactory.create(),
             JokesRepository(RNApiFactory.create(), MyStorageFactory.create(requireContext())),
             App.instance.router

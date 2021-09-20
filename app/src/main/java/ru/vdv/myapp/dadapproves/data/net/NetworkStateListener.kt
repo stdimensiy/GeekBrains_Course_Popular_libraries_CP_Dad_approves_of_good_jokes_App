@@ -20,6 +20,7 @@ class NetworkStateListener (
     }
     private val disposable = object : MainThreadDisposable() {
         override fun onDispose() {
+            Log.d("Моя проверка / NetworkStateListener", "Сработал onDispose")
             connectivityManager.unregisterNetworkCallback(this@NetworkStateListener)
         }
     }

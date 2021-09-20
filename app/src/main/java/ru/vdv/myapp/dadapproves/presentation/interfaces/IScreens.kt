@@ -9,7 +9,7 @@ import com.github.terrakok.cicerone.Screen
  */
 interface IScreens {
     /**
-     * Главный загрузочный экран (режимы работы приложеня, доступные рубрики)
+     * Главный загрузочный экран (режимы работы приложеня, доступные рубрики и шутки)
      */
     fun main(): Screen
 
@@ -24,7 +24,7 @@ interface IScreens {
     fun dadsOffice(): Screen
 
     /**
-     * Экран просмотра контента
+     * Экран просмотра и модерации контента
      */
     fun contentView(moderationMode: Boolean, category: Int): Screen
 }

@@ -9,7 +9,7 @@ import ru.vdv.myapp.dadapproves.databinding.ActivityMainBinding
 import ru.vdv.myapp.dadapproves.presentation.interfaces.BackButtonListener
 
 class MainActivity : MvpAppCompatActivity(), MvpView {
-    val navigator = AppNavigator(this, R.id.container)
+    private val navigator = AppNavigator(this, R.id.container)
     private val presenter by moxyPresenter {
         MainActivityPresenter(
             App.instance.router,
