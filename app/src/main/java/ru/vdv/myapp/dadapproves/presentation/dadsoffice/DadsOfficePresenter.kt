@@ -1,6 +1,5 @@
 package ru.vdv.myapp.dadapproves.presentation.dadsoffice
 
-//import android.util.Log
 import android.content.Context
 import android.widget.Toast
 import com.github.terrakok.cicerone.Router

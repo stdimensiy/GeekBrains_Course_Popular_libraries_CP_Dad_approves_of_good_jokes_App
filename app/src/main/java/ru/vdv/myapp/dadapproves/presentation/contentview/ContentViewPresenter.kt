@@ -31,7 +31,7 @@ class ContentViewPresenter(
         viewState.init()
         viewState.hideModeratorBtnGroup()
         viewState.clearStatus()
-        viewState.setTag("Пиривет!")
+        viewState.setTag(context.getString(R.string.main_greeting))
         if (moderationMode) {
             viewState.moderatorModeInit()
             viewState.showModeratorBtnGroup()
@@ -159,17 +159,7 @@ class ContentViewPresenter(
                     loadNewJokeFromNet()
                 } else {
                     viewState.setContent(t.content)
-                    currentJoke = RoomJoke(
-                        t.content,
-                        0,
-                        category,
-                        "",
-                        isViewedModerator = false,
-                        isViewedUser = false,
-                        isApproved = false,
-                        isForbidden = false,
-                        estimation = 0
-                    )
+                    currentJoke = RoomJoke(t.content, 0, category)
                     currentJoke?.let { roomJoke ->
                         disposables += jokesRepository
                             .retainContent(roomJoke)

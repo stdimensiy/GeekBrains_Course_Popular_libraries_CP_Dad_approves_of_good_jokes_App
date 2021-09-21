@@ -32,28 +32,24 @@ class JokesRepository(private val api: IDataRNAPI, private val db: MyStorage) : 
         return db.storageDao().update(joke).subscribeOn(MySchedulersFactory.create().io())
     }
 
-    // получить следующий одобренный
     override fun getNextOneApproves(groupId: Int, jokeId: Long): Single<RoomJoke> {
         return db.storageDao()
             .getNextOneApproves(groupId, jokeId)
             .subscribeOn(MySchedulersFactory.create().io())
     }
 
-    // получить предыдущий одобренный
     override fun getPreviousOneApproves(groupId: Int, jokeId: Long): Single<RoomJoke> {
         return db.storageDao()
             .getPreviousOneApproves(groupId, jokeId)
             .subscribeOn(MySchedulersFactory.create().io())
     }
 
-    // получить следующий (без учета критерия одобрения)
     override fun getNextOne(groupId: Int, jokeId: Long): Single<RoomJoke> {
         return db.storageDao()
             .getNextOne(groupId, jokeId)
             .subscribeOn(MySchedulersFactory.create().io())
     }
 
-    // получить предыдущий (без учета критерия одобрения)
     override fun getPreviousOne(groupId: Int, jokeId: Long): Single<RoomJoke> {
         return db.storageDao()
             .getPreviousOne(groupId, jokeId)

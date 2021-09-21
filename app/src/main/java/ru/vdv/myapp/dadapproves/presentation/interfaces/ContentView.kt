@@ -33,7 +33,6 @@ interface ContentView : MainView {
     fun disableBtnForbidden()
     fun enableBtnApprove()
     fun enableBtnForbidden()
-
     fun enableBtnLoadNewJokeFromNetwork()
     fun disableBtnLoadNewJokeFromNetwork()
 }

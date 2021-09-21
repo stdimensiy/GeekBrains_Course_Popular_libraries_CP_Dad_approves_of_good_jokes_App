@@ -27,4 +27,5 @@
     <string name="changes_were_saved_successfully">Изменения успешно сохранены</string>
     <string name="net_error">"Сетевая ошибка: "</string>
     <string name="storage_error">"Ошибка обращения к внутренней базе данных: "</string>
+    <string name="main_greeting">Пиривет!</string>
 </resources>

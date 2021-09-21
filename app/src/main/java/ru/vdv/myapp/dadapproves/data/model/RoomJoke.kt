@@ -26,10 +26,10 @@ data class RoomJoke(
     val content: String,
     @PrimaryKey(autoGenerate = true) var id: Long = 0,
     val type: Int?,
-    var labelTags: String,
-    var isViewedModerator: Boolean,
-    val isViewedUser: Boolean,
-    var isApproved: Boolean,
-    var isForbidden: Boolean,
-    val estimation: Int
+    var labelTags: String = "",
+    var isViewedModerator: Boolean = false,
+    val isViewedUser: Boolean = false,
+    var isApproved: Boolean = false,
+    var isForbidden: Boolean = false,
+    val estimation: Int = 0
 ) : Parcelable
